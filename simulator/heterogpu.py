@@ -1,4 +1,6 @@
-# simulator/heterogpu.py
+# HeteroGPU top-level SoC
+# Connects the SIMT cores, 2x2 systolic matrix engine, DMA and shared BRAM
+
 from memory import Memory
 from processing_element import ProcessingElement
 from simt_engine import SIMTEngine
@@ -6,30 +8,20 @@ from matrix_engine import MatrixEngine
 from dma_engine import DMAEngine
 
 class HeteroGPU:
-    """
-    HeteroGPU Top-Level SoC Architecture:
-    - 2048 x 16-bit Shared BRAM
-    - 4-Core SIMT Execution Array
-    - 2x2 AI Matrix Engine (Systolic Array)
-    - High-Bandwidth DMA Engine
-    - Hardware Cycle Telemetry System
-    """
-
-    # Memory Address Map
-    FRAMEBUFFER_BASE = 0      # 0 - 1023 (32x32 pixels)
-    AI_WEIGHTS_L1    = 1100   # 1100 - 1115 (4x4 Layer 1 weights = 16 words)
-    AI_WEIGHTS_L2    = 1120   # 1120 - 1127 (4x2 Layer 2 weights = 8 words)
-    AI_INPUT_BUFFER  = 1130   # 1130 - 1133 (Input state = 4 words)
-    AI_L1_ACTIVATIONS = 1140  # 1140 - 1143 (Hidden layer activations = 4 words)
-    AI_OUTPUT_BUFFER = 1150   # 1150 - 1151 (Output decisions = 2 words)
+    # memory map offsets
+    FRAMEBUFFER_BASE  = 0     # 0 - 1023 (32x32 screen)
+    AI_WEIGHTS_L1     = 1100  # 1100 - 1115 (4x4 Layer 1 weights)
+    AI_WEIGHTS_L2     = 1120  # 1120 - 1127 (4x2 Layer 2 weights)
+    AI_INPUT_BUFFER   = 1130  # 1130 - 1133 (Input vector)
+    AI_L1_ACTIVATIONS = 1140  # 1140 - 1143 (Hidden layer activations)
+    AI_OUTPUT_BUFFER  = 1150  # 1150 - 1151 (Action output scores)
 
     def __init__(self, memory_size=4096):
+        # 4096 words = 8 KB BRAM (synthesizable on Tang Nano 9K)
         self.memory = Memory(size_words=memory_size)
         self.simt = SIMTEngine(num_cores=4)
         self.matrix_engine = MatrixEngine(size=2)
         self.dma = DMAEngine(name="DMA_0")
-        
-        # Telemetry
         self.reset_telemetry()
 
     def reset_telemetry(self):
@@ -87,7 +79,7 @@ class HeteroGPU:
 
 if __name__ == '__main__':
     gpu = HeteroGPU()
-    print("HeteroGPU SoC successfully initialized!")
-    print(f"Memory: {gpu.memory.size_words} 16-bit words")
-    print(f"SIMT Cores: {gpu.simt.num_cores}")
-    print(f"AI Engine: {gpu.matrix_engine.size}x{gpu.matrix_engine.size} MAC Array")
+    print("HeteroGPU SoC initialized successfully!")
+    print(f"BRAM: {gpu.memory.size_words} words (16-bit)")
+    print(f"SIMT PEs: {gpu.simt.num_cores}")
+    print(f"AI Unit: {gpu.matrix_engine.size}x{gpu.matrix_engine.size} systolic MAC array")
