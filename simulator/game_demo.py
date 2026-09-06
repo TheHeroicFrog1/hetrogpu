@@ -50,7 +50,8 @@ class HeteroGPUMultiDemo:
         self.ball_dx = 1.0
         self.ball_dy = 0.8
         self.paddle_y = 14
-        self.paddle_height = 6
+        self.paddle_height = 7
+        self.paddle_speed = 1.3
         self.score_hits = 0
         self.last_ai_action = "IDLE"
         self.last_up_score = 0
@@ -103,10 +104,10 @@ class HeteroGPUMultiDemo:
         self.last_down_score = down_score
 
         if decision == -1:
-            self.paddle_y -= 1.0
+            self.paddle_y -= self.paddle_speed
             self.last_ai_action = "^ MOVE UP"
         elif decision == 1:
-            self.paddle_y += 1.0
+            self.paddle_y += self.paddle_speed
             self.last_ai_action = "v MOVE DOWN"
         else:
             self.last_ai_action = "- HOLD"
@@ -204,10 +205,10 @@ class HeteroGPUMultiDemo:
             )
 
         if decision == -1:
-            self.paddle_y -= 1.0
+            self.paddle_y -= self.paddle_speed
             self.last_ai_action = "^ MOVE UP"
         elif decision == 1:
-            self.paddle_y += 1.0
+            self.paddle_y += self.paddle_speed
             self.last_ai_action = "v MOVE DOWN"
         else:
             self.last_ai_action = "- HOLD"

@@ -11,18 +11,19 @@ class PongAIBrain:
     def _init_weights(self):
         # 4x4 integer weights for Layer 1
         # inputs: [ball_x, ball_y, paddle_y, ball_dy]
+        # calibrated for accurate trajectory interception
         self.w1 = [
-             10,  -5,   5,  -8,
-            -20,  30, -25,  15,
-             25, -30,  30, -15,
-             -5,  15, -10,  20
+             0,    0,  -8,  -8,   # Row 0: Ball_X
+           -32,   32,   0,   0,   # Row 1: Ball_Y
+            32,  -32,  -8,   8,   # Row 2: Paddle_Y
+           -16,   16,   0,   0    # Row 3: Ball_DY (anticipates bounce)
         ]
         # 4x2 integer weights for Layer 2: output scores for [UP, DOWN]
         self.w2 = [
-             35, -30,
-            -40,  45,
-             40, -35,
-            -25,  30
+            48, -32,  # H0 (UP activation)
+           -32,  48,  # H1 (DOWN activation)
+            16, -16,  # H2 (center bias UP)
+           -16,  16   # H3 (center bias DOWN)
         ]
 
     def load_weights_to_gpu(self):

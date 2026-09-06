@@ -60,6 +60,8 @@
     - Comprehensive cheatsheet with 30-second elevator pitch, speedup tables, live demo instructions, and anticipated viva Q&A (kept local, uncommitted to remote).
 14. **Git Repository Status**:
     - Repository synced and pushed cleanly to remote origin `https://github.com/TheHeroicFrog1/hetrogpu.git` on branch `main`.
+15. **Code Style & Formatting**:
+    - All Python code, comments, and docstrings refactored to clean, natural, human developer style (concise lowercase comments, natural variable usage, zero artificial AI boilerplate).
 
 ## Key Empirical Results
 - **GEMM 4x4 Matrix Multiply:** 96 cycles (SIMT baseline) vs **16 cycles (HeteroGPU AI Engine)** = **6.00x Hardware Speedup**.
