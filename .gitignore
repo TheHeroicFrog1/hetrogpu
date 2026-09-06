@@ -1,0 +1,55 @@
+# =====================================================================
+# Personal & Academic Presentation / Viva Notes
+# =====================================================================
+VIVA_DEFENSE_GUIDE.md
+*viva*
+*defense*
+personal/
+notes/
+private/
+*.pptx
+*.key
+
+# =====================================================================
+# Python Cache & Bytecode
+# =====================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# =====================================================================
+# Environments & Toolchains
+# =====================================================================
+.env
+.venv
+env/
+venv/
+ENV/
+
+# =====================================================================
+# OS & Editor Specifics
+# =====================================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/

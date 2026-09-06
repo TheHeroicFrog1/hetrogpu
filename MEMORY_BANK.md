@@ -19,13 +19,14 @@
    - Supports `ADD`, `SUB`, `MUL`, `AND`, `OR`, `XOR`, `LOAD`, `STORE`, `NOP`.
    - **AI Instructions:** Added `RELU` (activation), `CMP_GT` (comparison), `MAX`, and signed 16-bit conversion.
 2. **`memory.py`**:
-   - Simulates FPGA Block RAM (BRAM) of 2048 16-bit words.
+   - Simulates FPGA Block RAM (BRAM) of 4096 16-bit words (8 KB).
    - Address 0-1023: 32x32 Framebuffer.
    - Address 1100-1115: Layer 1 AI Weights.
    - Address 1120-1127: Layer 2 AI Weights.
    - Address 1130-1133: AI Input State Buffer.
    - Address 1140-1143: Hidden Layer Activations.
    - Address 1150-1151: Output Decision Scores.
+   - Address 1200-2223: DMA Animated Sprite Buffer.
 3. **`simt_engine.py`**:
    - 4-core parallel Processing Element array.
    - Supports `LOAD_PARALLEL`, `STORE_PARALLEL`, arithmetic broadcast, and `parallel_relu`.
@@ -41,12 +42,21 @@
    - Quantized 2-layer MLP neural network running entirely on the heterogeneous engines.
    - Inputs: Ball (X, Y), Paddle Y, Ball Velocity. Output: UP / DOWN decision.
 8. **`game_demo.py`**:
-   - Interactive Pygame showcase with side-by-side Game Arena (rendered by SIMT) and real-time Hardware Telemetry HUD (live utilization bars for SIMT, AI, DMA).
+   - Interactive multi-mode Pygame showcase with side-by-side display and real-time Hardware Telemetry HUD.
+   - Supports 4 live interactive modes switched via keyboard (`[1..4]`, `[TAB]`, `[SPACE]`) or on-screen tabs:
+     - Mode 1: AI Acceleration (Neural Network Pong).
+     - Mode 2: SIMT 4-Core Wave Shader (~95% SIMT utilization).
+     - Mode 3: DMA Burst Streaming (zero core overhead, cores 100% idle).
+     - Mode 4: The Showdown (live toggle with `[S]` between 110-cycle homogeneous SIMT and 34-cycle HeteroGPU).
 9. **`benchmark.py`**:
    - Academic benchmark suite measuring clock cycles. Demonstrates **6.00x hardware speedup** for 4x4 GEMM over SIMT baseline.
 10. **`run_demo.py`**:
-    - Unified launcher script (`py run_demo.py` or `py run_demo.py --bench`).
-11. **`VIVA_DEFENSE_GUIDE.md`**:
+    - Unified launcher script (`py run_demo.py`, `py run_demo.py --bench`, `py run_demo.py --graph`).
+11. **`generate_graphs.py`**:
+    - Automated Matplotlib script generating publication-quality 300 DPI evaluation charts saved to `results/heterogpu_evaluation_results.png`.
+12. **`.gitignore`**:
+    - Protects personal files (`VIVA_DEFENSE_GUIDE.md`, `*viva*`, `*defense*`, `notes/`, `personal/`) and Python cache artifacts from git tracking.
+13. **`VIVA_DEFENSE_GUIDE.md`**:
     - Comprehensive cheatsheet with 30-second elevator pitch, speedup tables, live demo instructions, and anticipated viva Q&A.
 
 ## Key Empirical Results

@@ -23,7 +23,7 @@ class HeteroGPU:
     AI_L1_ACTIVATIONS = 1140  # 1140 - 1143 (Hidden layer activations = 4 words)
     AI_OUTPUT_BUFFER = 1150   # 1150 - 1151 (Output decisions = 2 words)
 
-    def __init__(self, memory_size=2048):
+    def __init__(self, memory_size=4096):
         self.memory = Memory(size_words=memory_size)
         self.simt = SIMTEngine(num_cores=4)
         self.matrix_engine = MatrixEngine(size=2)

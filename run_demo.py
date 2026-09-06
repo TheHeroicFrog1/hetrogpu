@@ -20,8 +20,13 @@ if __name__ == '__main__':
         benchmark.benchmark_matrix_multiplication()
         benchmark.benchmark_dma_transfer()
         benchmark.benchmark_ai_inference()
+    elif len(sys.argv) > 1 and sys.argv[1] in ("--graph", "-g", "--graphs"):
+        import generate_graphs
+        print("Generating and displaying HeteroGPU Evaluation Charts...\n")
+        img_path = generate_graphs.generate_all_plots()
+        os.system(f'start "" "{img_path}"')
     else:
         import game_demo
         print("Starting HeteroGPU Interactive Live Demonstration...")
-        demo = game_demo.HeteroGPUDemo()
+        demo = game_demo.HeteroGPUMultiDemo()
         demo.run()
