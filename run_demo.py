@@ -7,16 +7,17 @@
 import sys
 import os
 
-# add simulator folder to path
+# ensure simulator package and root directory are in path
 sim_path = os.path.join(os.path.dirname(__file__), "simulator")
-sys.path.insert(0, sim_path)
+if sim_path not in sys.path:
+    sys.path.insert(0, sim_path)
 
 if __name__ == '__main__':
     args = sys.argv[1:]
 
     # benchmark mode
     if args and args[0] in ("--bench", "-b", "--benchmark"):
-        import benchmark
+        from simulator import benchmark
         print("Running HeteroGPU benchmarks...")
         benchmark.benchmark_matrix_multiplication()
         benchmark.benchmark_dma_transfer()
@@ -31,7 +32,7 @@ if __name__ == '__main__':
 
     # default: interactive pygame showcase
     else:
-        import game_demo
+        from simulator import game_demo
         print("Starting HeteroGPU demo window...")
         demo = game_demo.HeteroGPUMultiDemo()
         demo.run()
