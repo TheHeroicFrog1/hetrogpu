@@ -1,4 +1,4 @@
-# Launcher script for the HeteroGPU demo and benchmarks
+# Top-level launcher forwarding to python_test_simulator
 # Usage:
 #   py run_demo.py         (opens interactive 4-mode game/shader demo)
 #   py run_demo.py --bench (runs terminal benchmark suite)
@@ -7,32 +7,11 @@
 import sys
 import os
 
-# ensure simulator package and root directory are in path
-sim_path = os.path.join(os.path.dirname(__file__), "simulator")
+sim_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "python_test_simulator")
 if sim_path not in sys.path:
     sys.path.insert(0, sim_path)
 
 if __name__ == '__main__':
-    args = sys.argv[1:]
+    import run_demo as sim_launcher
+    sim_launcher.main()
 
-    # benchmark mode
-    if args and args[0] in ("--bench", "-b", "--benchmark"):
-        from simulator import benchmark
-        print("Running HeteroGPU benchmarks...")
-        benchmark.benchmark_matrix_multiplication()
-        benchmark.benchmark_dma_transfer()
-        benchmark.benchmark_ai_inference()
-
-    # plot graphs mode
-    elif args and args[0] in ("--graph", "-g", "--graphs"):
-        import generate_graphs
-        print("Plotting benchmark graphs...")
-        img_path = generate_graphs.generate_all_plots()
-        os.system(f'start "" "{img_path}"')
-
-    # default: interactive pygame showcase
-    else:
-        from simulator import game_demo
-        print("Starting HeteroGPU demo window...")
-        demo = game_demo.HeteroGPUMultiDemo()
-        demo.run()

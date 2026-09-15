@@ -24,15 +24,18 @@ HeteroGPU is a heterogeneous GPU architecture combining SIMT processing cores wi
 
 ---
 
-## Current Status (Phase 1: Python Simulator)
-Location: `simulator/`
-- [x] `processing_element.py`: 16-bit ALU (ADD, SUB, MUL, AND, OR, XOR, LOAD, STORE) with 8 registers (R0-R7).
-- [x] `memory.py`: 16-bit shared memory model simulating FPGA Block RAM.
-- [x] `simt_engine.py`: 4-core parallel SIMT execution engine with `LOAD_PARALLEL`, `STORE_PARALLEL`, and broadcast arithmetic. Verified with vector addition test workload `[5, 10, 15, 20] + [1, 2, 3, 4] = [6, 12, 18, 24]`.
-- [ ] `matrix_engine.py`: 2x2 MAC grid.
-- [ ] `dma_engine.py`: Block memory transfer engine.
-- [ ] `controller.py`: Workload dispatcher / scheduler.
-- [ ] 2D Display / Pygame demo framebuffer.
+## Current Status (Phase 1: Python Test Simulator)
+Location: `python_test_simulator/`
+- [x] `processing_element.py`: 16-bit ALU (ADD, SUB, MUL, AND, OR, XOR, RELU, CMP_GT, MAX, LOAD, STORE) with 8 registers (R0-R7).
+- [x] `memory.py`: 16-bit shared memory model simulating FPGA Block RAM (4096 words / 8 KB).
+- [x] `simt_engine.py`: 4-core parallel SIMT execution engine with `LOAD_PARALLEL`, `STORE_PARALLEL`, broadcast arithmetic, and parallel ReLU.
+- [x] `matrix_engine.py`: 2x2 Systolic Array MAC unit (4 cycles).
+- [x] `dma_engine.py`: Block memory transfer burst engine (1 + N cycles).
+- [x] `heterogpu.py`: Top-level SoC controller and cycle telemetry counters.
+- [x] `ai_model.py`: Quantized 2-layer MLP neural network brain.
+- [x] `game_demo.py`: Interactive 4-mode Pygame showcase with real-time HUD telemetry.
+- [x] `benchmark.py`: Academic benchmarking suite (5.75x speedup measured).
+- [x] `generate_graphs.py`: Automated 300 DPI Matplotlib evaluation charts.
 
 ---
 

@@ -67,8 +67,9 @@
     - Verified 100.0% intercept rate across 1,000 continuous frames (21 hits, 0 misses).
 17. **Academic References & Literature**:
     - Curated bibliography in `REFERENCES.md` covering Google TPU (ISCA 2017), Kung & Leiserson (1979), NVIDIA Volta Tensor Core (IEEE Micro 2018), and open-source GitHub FPGA GPUs (`tiny-gpu`, `smol-gpu`, `Gemmini`, `FPGA-SystolicArray`).
-18. **Package Structure & IDE Compatibility**:
-    - Added `simulator/__init__.py` and updated `run_demo.py` imports (`from simulator import benchmark, game_demo`) to resolve VS Code Pylance static analysis diagnostics cleanly.
+18. **Package Structure & Directory Layout**:
+    - Renamed and organized all Phase 1 Python architectural simulation files into `python_test_simulator/` (`python_test_simulator/run_demo.py`, `generate_graphs.py`, `results/`, etc.).
+    - Maintained root forwarder `run_demo.py` so running `py run_demo.py` works seamlessly both from repository root and from inside `python_test_simulator/`.
 19. **Reality Audit & Physical SIMT Simulation**:
     - Replaced analytical benchmark estimates with actual instruction-by-instruction execution routines in `SIMTEngine` (`execute_gemm_4x4()` and `execute_copy()`).
     - All timing benchmarks are 100% physically simulated in software register-transfer logic.
