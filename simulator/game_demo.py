@@ -192,8 +192,8 @@ class HeteroGPUMultiDemo:
     # --- Mode 4: Comparison / Showdown ---
     def run_mode_showdown(self):
         if self.showdown_simt_only:
-            # simulated penalty for computing GEMM on standard SIMT cores
-            self.gpu.simt_cycles += 96
+            # penalty for computing GEMM on standard SIMT cores (measured 92 cycles)
+            self.gpu.simt_cycles += 92
             decision, up_score, down_score = self.ai.forward(
                 int(self.ball_x), int(self.ball_y), int(self.paddle_y + 3), int(self.ball_dy * 10)
             )
