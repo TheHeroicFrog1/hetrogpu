@@ -37,7 +37,7 @@ def generate_all_plots():
     # -------------------------------------------------------------------------
     ax1 = axes[0, 0]
     t1_labels = ['Standard SIMT Cores\n(Sequential loops on 4 PEs)', 'HeteroGPU Matrix Engine\n(2x2 Systolic Array)']
-    t1_cycles = [96, 16]
+    t1_cycles = [92, 16]
 
     bars1 = ax1.bar(t1_labels, t1_cycles, color=[c_baseline, c_hetero], width=0.45, edgecolor='black', alpha=0.9)
     ax1.set_ylabel('Execution Time (Clock Cycles)', fontweight='bold')
@@ -50,13 +50,13 @@ def generate_all_plots():
         ax1.annotate(f'{h} cycles', xy=(b.get_x() + b.get_width()/2, h), xytext=(0, 4),
                      textcoords="offset points", ha='center', va='bottom', fontweight='bold', fontsize=12)
 
-    # big speedup callout
-    ax1.text(0.5, 0.72, '6.0x FASTER\nwith Matrix Engine', transform=ax1.transAxes,
+    # speedup callout
+    ax1.text(0.5, 0.72, '5.75x FASTER\nwith Matrix Engine', transform=ax1.transAxes,
              ha='center', va='center', fontsize=13, fontweight='bold', color='#1e7e34',
              bbox=dict(boxstyle='round,pad=0.5', facecolor='#e8f5e9', edgecolor='#27ae60', linewidth=1.5))
 
     # plain-English takeaway box
-    ax1.text(0.5, 0.08, 'Takeaway: The 2x2 Systolic Array finishes in 16 cycles vs 96 cycles,\nbecause all 4 MAC units compute simultaneously without loop overhead.',
+    ax1.text(0.5, 0.08, 'Takeaway: The 2x2 Systolic Array finishes in 16 cycles vs 92 cycles on SIMT,\nbecause all 4 MAC units compute simultaneously without loop overhead.',
              transform=ax1.transAxes, ha='center', va='bottom', fontsize=9.5, style='italic',
              bbox=dict(boxstyle='square,pad=0.4', facecolor=c_box_bg, edgecolor='#ccc'))
 

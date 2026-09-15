@@ -15,27 +15,26 @@ def benchmark_matrix_multiplication():
 
     addr_a = 100
     addr_b = 120
+    addr_c_simt = 140
     addr_c_ai = 160
 
     gpu.run_dma_load(mat_a, addr_a)
     gpu.run_dma_load(mat_b, addr_b)
 
-    # on 4 SIMT PEs without systolic array:
-    # 16 output elements = 4 iterations across 4 PEs
-    # each iteration takes ~24 cycles (loads, muls, adds, store)
-    simt_gemm_cycles = 96
+    # executed directly via instruction broadcast on SIMT cores
+    simt_cycles = gpu.simt.execute_gemm_4x4(gpu.memory, addr_a, addr_b, addr_c_simt)
 
-    # on our 2x2 systolic array: 4 tiles * 4 cycles
+    # executed on 2x2 systolic array
     gpu.reset_telemetry()
     for r in range(0, 4, 2):
         for c in range(0, 4, 2):
             gpu.matrix_engine.execute_mac_2x2(gpu.memory, addr_a, addr_b, addr_c_ai)
 
-    ai_gemm_cycles = gpu.matrix_engine.total_cycles
-    speedup = simt_gemm_cycles / ai_gemm_cycles
+    ai_cycles = gpu.matrix_engine.total_cycles
+    speedup = simt_cycles / ai_cycles
 
-    print(f"  SIMT Cores (4 PEs)    : {simt_gemm_cycles} cycles")
-    print(f"  Matrix Engine (2x2)   : {ai_gemm_cycles} cycles")
+    print(f"  SIMT Cores (4 PEs)    : {simt_cycles} cycles")
+    print(f"  Matrix Engine (2x2)   : {ai_cycles} cycles")
     print(f"  -> Hardware Speedup   : {speedup:.2f}x faster")
 
 
@@ -47,15 +46,15 @@ def benchmark_dma_transfer():
     src_addr = 500
     dest_addr = 600
 
-    # manual copy on SIMT cores: 16 chunks * 4 cycles + loop overhead
-    simt_copy_cycles = 80
+    # executed directly via parallel load/store loop on SIMT cores
+    simt_cycles = gpu.simt.execute_copy(gpu.memory, src_addr, dest_addr, block_size)
 
-    # dedicated DMA burst: 1 setup + 64 transfers
+    # executed via hardware DMA burst controller
     gpu.reset_telemetry()
     dma_cycles = gpu.run_dma_transfer(src_addr, dest_addr, block_size)
-    speedup = simt_copy_cycles / dma_cycles
+    speedup = simt_cycles / dma_cycles
 
-    print(f"  Manual SIMT Copy      : {simt_copy_cycles} cycles")
+    print(f"  Manual SIMT Copy      : {simt_cycles} cycles")
     print(f"  Hardware DMA Burst    : {dma_cycles} cycles")
     print(f"  -> Speedup            : {speedup:.2f}x faster (SIMT cores 100% idle)")
 
