@@ -79,7 +79,7 @@ module tb_heterogpu;
     // =========================================================================
     initial begin
         // Setup VCD Waveform Dump for GTKWave / WaveTrace
-        $dumpfile("sim/waves.vcd");
+        $dumpfile("hardware/sim/waves.vcd");
         $dumpvars(0, tb_heterogpu);
 
         $display("\n=======================================================");
