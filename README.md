@@ -78,21 +78,22 @@ HeteroGPU/
 │   ├── generate_graphs.py          # Automated 300 DPI publication chart generator
 │   └── run_demo.py                 # Unified simulator launcher
 │
-├── rtl/                            # Phase 2: Synthesizable SystemVerilog RTL
-│   ├── pe_core.sv                  # 16-bit execution lane with GPR file
-│   ├── simt_engine.sv              # 4-lane SIMT array with vector load/store
-│   ├── systolic_array_2x2.sv       # 2x2 Tensor Processing Unit (4 DSP blocks)
-│   ├── dma_controller.sv           # Hardware burst memory controller
-│   ├── bram_memory.sv              # 8 KB dual-port Block RAM (Gowin BSRAM)
-│   └── heterogpu_top.sv            # Top-level SoC interconnect & arbiter
-│
-├── sim/                            # Verification Testbenches
-│   └── tb_heterogpu.sv             # RTL verification testbench against Golden Model
-│
-├── fpga/                           # Phase 3: Physical FPGA Synthesis Constraints
-│   └── tangnano9k/
-│       ├── tangnano9k.cst          # Physical pin constraints (HDMI, clock, buttons)
-│       └── tangnano9k.sdc          # 27 MHz timing constraints
+├── hardware/                       # Phase 2 & 3: Hardware Implementation
+│   ├── rtl/                        # Synthesizable SystemVerilog RTL
+│   │   ├── pe_core.sv              # 16-bit execution lane with GPR file
+│   │   ├── simt_engine.sv          # 4-lane SIMT array with vector load/store
+│   │   ├── systolic_array_2x2.sv   # 2x2 Tensor Processing Unit (4 DSP blocks)
+│   │   ├── dma_controller.sv       # Hardware burst memory controller
+│   │   ├── bram_memory.sv          # 8 KB dual-port Block RAM (Gowin BSRAM)
+│   │   └── heterogpu_top.sv        # Top-level SoC interconnect & arbiter
+│   │
+│   ├── sim/                        # Verification Testbenches
+│   │   └── tb_heterogpu.sv         # RTL verification testbench against Golden Model
+│   │
+│   └── fpga/                       # Physical FPGA Synthesis Constraints
+│       └── tangnano9k/
+│           ├── tangnano9k.cst      # Physical pin constraints (HDMI, clock, buttons)
+│           └── tangnano9k.sdc      # 27 MHz timing constraints
 │
 ├── REFERENCES.md                   # Curated bibliography (TPU, Volta, Kung & Leiserson)
 └── PROJECT_SUMMARY.md              # Project specifications & scope
@@ -121,18 +122,18 @@ Simulate with any standard Verilog simulator (Icarus Verilog, ModelSim, Verilato
 
 ```bash
 # Compile and run testbench with Icarus Verilog
-iverilog -g2012 -o sim/heterogpu_sim rtl/*.sv sim/tb_heterogpu.sv
-vvp sim/heterogpu_sim
+iverilog -g2012 -o hardware/sim/heterogpu_sim hardware/rtl/*.sv hardware/sim/tb_heterogpu.sv
+vvp hardware/sim/heterogpu_sim
 
 # View waveform traces in GTKWave
-gtkwave sim/waves.vcd
+gtkwave hardware/sim/waves.vcd
 ```
 
 ### 3. Synthesize for Sipeed Tang Nano 9K
 1. Open **Gowin EDA (v1.9.9+)**.
 2. Create project targeting device **GW1NR-LV9QN88PC6/I5**.
-3. Add all SystemVerilog files from `rtl/`.
-4. Add physical constraints from `fpga/tangnano9k/tangnano9k.cst` and `tangnano9k.sdc`.
+3. Add all SystemVerilog files from `hardware/rtl/`.
+4. Add physical constraints from `hardware/fpga/tangnano9k/tangnano9k.cst` and `hardware/fpga/tangnano9k/tangnano9k.sdc`.
 5. Run **Place & Route** to generate the `.fs` bitstream.
 
 ---

@@ -6,10 +6,22 @@
 
 import pygame
 import sys
+import os
 import math
 import time
-from heterogpu import HeteroGPU
-from ai_model import PongAIBrain
+
+# Ensure current module directory is in sys.path for direct imports
+_dir = os.path.dirname(os.path.abspath(__file__))
+if _dir not in sys.path:
+    sys.path.insert(0, _dir)
+
+try:
+    from heterogpu import HeteroGPU
+    from ai_model import PongAIBrain
+except ImportError:
+    from python_test_simulator.heterogpu import HeteroGPU
+    from python_test_simulator.ai_model import PongAIBrain
+
 
 class HeteroGPUMultiDemo:
     def __init__(self):

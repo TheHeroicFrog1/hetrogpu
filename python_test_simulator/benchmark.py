@@ -7,8 +7,21 @@
 #   Test 3: End-to-End Neural Network Forward Pass Telemetry Breakdown
 # ==============================================================================
 
-from heterogpu import HeteroGPU
-from ai_model import PongAIBrain
+import sys
+import os
+
+# Ensure current module directory is in sys.path
+_dir = os.path.dirname(os.path.abspath(__file__))
+if _dir not in sys.path:
+    sys.path.insert(0, _dir)
+
+try:
+    from heterogpu import HeteroGPU
+    from ai_model import PongAIBrain
+except ImportError:
+    from python_test_simulator.heterogpu import HeteroGPU
+    from python_test_simulator.ai_model import PongAIBrain
+
 
 def benchmark_matrix_multiplication():
     print("\n[Benchmark 1] 4x4 Matrix Multiply (GEMM)")
