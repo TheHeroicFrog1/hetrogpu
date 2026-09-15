@@ -86,7 +86,7 @@
      - `hardware/rtl/bram_memory.sv`: 4096-word dual-port synchronous Block RAM (8 KB) synthesizable to Gowin BSRAM.
      - `hardware/rtl/heterogpu_top.sv`: Top-level SoC interconnecting all compute cores, memory arbiter, and cycle telemetry.
    - Created verification testbench `hardware/sim/tb_heterogpu.sv` with 27 MHz clock generator and waveform dumping (`hardware/sim/waves.vcd`).
-   - Added `hardware/sim/run_sim.ps1` and `hardware/sim/run_sim.bat` for one-click compilation and execution.
+   - Added `hardware/sim/filelist.f` for cross-platform EDA compilation and one-click scripts `hardware/sim/run_sim.ps1` and `hardware/sim/run_sim.bat`.
    - Verified simulation output: all 3 testbenches passed (ReLU clamp, 4-cycle Systolic Array, 9-cycle DMA burst).
    - Created physical FPGA pin constraints `hardware/fpga/tangnano9k/tangnano9k.cst` and timing constraints `tangnano9k.sdc` for Sipeed Tang Nano 9K (Gowin GW1NR-9).
    - Added `C:\iverilog\bin` permanently to user Windows `PATH` environment variable.
