@@ -51,31 +51,31 @@
 9. **`benchmark.py`**:
    - Academic benchmark suite measuring authentic clock cycles. Demonstrates **5.75x hardware speedup** (92 SIMT cycles vs 16 Matrix Engine cycles) for 4x4 GEMM over fully simulated SIMT baseline.
 10. **`run_demo.py`**:
-    - Unified launcher script (`py run_demo.py`, `py run_demo.py --bench`, `py run_demo.py --graph`).
+   - Dedicated simulator launcher inside `python_test_simulator/` (`py python_test_simulator/run_demo.py`, `--bench`, `--graph`).
 11. **`generate_graphs.py`**:
-    - Automated Matplotlib script generating publication-quality 300 DPI evaluation charts saved to `results/heterogpu_evaluation_results.png` (2x2 test-by-test card layout with explicit Test 1-4 titles, speedup badges, and plain-English takeaways).
+   - Automated Matplotlib script generating publication-quality 300 DPI evaluation charts saved to `python_test_simulator/results/heterogpu_evaluation_results.png` (2x2 test-by-test card layout with explicit Test 1-4 titles, speedup badges, and plain-English takeaways).
 12. **`.gitignore`**:
-    - Protects personal files (`VIVA_DEFENSE_GUIDE.md`, `CODE_EXPLAINED.md`, `*viva*`, `*defense*`, `notes/`, `personal/`) and Python cache artifacts from git tracking.
+   - Protects personal files (`VIVA_DEFENSE_GUIDE.md`, `CODE_EXPLAINED.md`, `*viva*`, `*defense*`, `notes/`, `personal/`) and Python cache artifacts from git tracking.
 13. **`VIVA_DEFENSE_GUIDE.md`**:
-    - Comprehensive cheatsheet with 30-second elevator pitch, speedup tables, deep dive on what each core does and how it was implemented (SIMT, 2x2 Systolic Array, DMA), live demo instructions, and anticipated viva Q&A (kept local, uncommitted to remote).
+   - Comprehensive cheatsheet with 30-second elevator pitch, speedup tables, deep dive on what each core does and how it was implemented (SIMT, 2x2 Systolic Array, DMA), live demo instructions, and anticipated viva Q&A (kept local, uncommitted to remote).
 14. **`CODE_EXPLAINED.md`**:
-    - Comprehensive guide detailing every Python file, class, method, and loop (`for`, `while`) with hardware timing rationale, parameter definitions for Tang Nano 9K FPGA, and an authenticity audit proving 100% genuine execution with zero fake components (kept local, uncommitted to remote).
+   - Comprehensive guide detailing every Python file, class, method, and loop (`for`, `while`) with hardware timing rationale, parameter definitions for Tang Nano 9K FPGA, and an authenticity audit proving 100% genuine execution with zero fake components (kept local, uncommitted to remote).
 15. **Git Repository Status**:
-    - Repository synced and pushed cleanly to remote origin `https://github.com/TheHeroicFrog1/hetrogpu.git` on branch `main` (latest commit `934f98f`).
+   - Repository synced and pushed cleanly to remote origin `https://github.com/TheHeroicFrog1/hetrogpu.git` on branch `main` (latest commit `24fbaed`).
 16. **AI Neural Network Calibration**:
-    - Calibrated $W_1$ and $W_2$ weights in `ai_model.py` for trajectory prediction and anti-oscillation tracking.
-    - Verified 100.0% intercept rate across 1,000 continuous frames (21 hits, 0 misses).
+   - Calibrated $W_1$ and $W_2$ weights in `ai_model.py` for trajectory prediction and anti-oscillation tracking.
+   - Verified 100.0% intercept rate across 1,000 continuous frames (21 hits, 0 misses).
 17. **Academic References & Literature**:
-    - Curated bibliography in `REFERENCES.md` covering Google TPU (ISCA 2017), Kung & Leiserson (1979), NVIDIA Volta Tensor Core (IEEE Micro 2018), and open-source GitHub FPGA GPUs (`tiny-gpu`, `smol-gpu`, `Gemmini`, `FPGA-SystolicArray`).
+   - Curated bibliography in `REFERENCES.md` covering Google TPU (ISCA 2017), Kung & Leiserson (1979), NVIDIA Volta Tensor Core (IEEE Micro 2018), and open-source GitHub FPGA GPUs (`tiny-gpu`, `smol-gpu`, `Gemmini`, `FPGA-SystolicArray`).
 18. **Package Structure & Directory Layout**:
-    - Renamed and organized all Phase 1 Python architectural simulation files into `python_test_simulator/` (`python_test_simulator/run_demo.py`, `generate_graphs.py`, `results/`, etc.).
-    - Maintained root forwarder `run_demo.py` so running `py run_demo.py` works seamlessly both from repository root and from inside `python_test_simulator/`.
+   - Clean, professional root structure: all Phase 1 Python architectural simulation modules, benchmarks, graphs, and the single `run_demo.py` launcher are organized inside `python_test_simulator/`.
+   - Root directory is kept clean for upcoming Phase 2 `rtl/`, `sim/`, and `fpga/` hardware folders.
 19. **Reality Audit & Physical SIMT Simulation**:
-    - Replaced analytical benchmark estimates with actual instruction-by-instruction execution routines in `SIMTEngine` (`execute_gemm_4x4()` and `execute_copy()`).
-    - All timing benchmarks are 100% physically simulated in software register-transfer logic.
+   - Replaced analytical benchmark estimates with actual instruction-by-instruction execution routines in `SIMTEngine` (`execute_gemm_4x4()` and `execute_copy()`).
+   - All timing benchmarks are 100% physically simulated in software register-transfer logic.
 20. **Hardware Terminology & Plain-English Annotations**:
-    - Enriched all simulator modules (`processing_element.py`, `memory.py`, `simt_engine.py`, `matrix_engine.py`, `dma_engine.py`, `heterogpu.py`, `ai_model.py`, `benchmark.py`) with student-style plain English hardware annotations.
-    - Clearly documents VLSI concepts (word masking, two's complement, GPR register files, BRAM boundaries, SIMT instruction broadcast, 2D systolic dataflow, DMA bus arbitration, fixed-point scaling).
+   - Enriched all simulator modules (`processing_element.py`, `memory.py`, `simt_engine.py`, `matrix_engine.py`, `dma_engine.py`, `heterogpu.py`, `ai_model.py`, `benchmark.py`) with student-style plain English hardware annotations.
+   - Clearly documents VLSI concepts (word masking, two's complement, GPR register files, BRAM boundaries, SIMT instruction broadcast, 2D systolic dataflow, DMA bus arbitration, fixed-point scaling).
 
 ## Key Empirical Results
 - **GEMM 4x4 Matrix Multiply:** 92 cycles (SIMT baseline: scalar broadcast, parallel load, parallel mul, parallel add, parallel store) vs **16 cycles (HeteroGPU AI Engine)** = **5.75x Hardware Speedup**.
