@@ -9,8 +9,8 @@
   2. Neural Network & AI Forward Pass Engine [COMPLETED]
   3. Real-Time Hardware Telemetry HUD & Game Demo [COMPLETED]
   4. Academic Benchmark Suite & Viva Defense Guide [COMPLETED]
-  5. Hardware Description (SystemVerilog RTL) [NEXT PHASE]
-  6. Physical Verification & Deployment (Tang Nano 9K / Gowin EDA)
+  5. Hardware Description (SystemVerilog RTL) [COMPLETED]
+  6. Physical Verification & Deployment (Tang Nano 9K / Gowin EDA) [NEXT PHASE]
 
 ## Current Architecture Components
 1. **`processing_element.py`**:
@@ -76,6 +76,17 @@
 20. **Hardware Terminology & Plain-English Annotations**:
    - Enriched all simulator modules (`processing_element.py`, `memory.py`, `simt_engine.py`, `matrix_engine.py`, `dma_engine.py`, `heterogpu.py`, `ai_model.py`, `benchmark.py`) with student-style plain English hardware annotations.
    - Clearly documents VLSI concepts (word masking, two's complement, GPR register files, BRAM boundaries, SIMT instruction broadcast, 2D systolic dataflow, DMA bus arbitration, fixed-point scaling).
+21. **Phase 2: Synthesizable SystemVerilog RTL Implementation**:
+   - Authored synthesizable SystemVerilog modules in `rtl/` matching Python Golden Model 1-to-1:
+     - `rtl/pe_core.sv`: 16-bit ALU (ADD, SUB, MUL, RELU sign-bit zeroing, CMP_GT, MAX) + 8-word GPR file (R0-R7).
+     - `rtl/simt_engine.sv`: 4-lane parallel SIMT array with lockstep instruction broadcast and parallel memory vector access.
+     - `rtl/systolic_array_2x2.sv`: 2x2 Tensor Processing Unit with 4 physical DSP MAC cells (Kung & Leiserson dataflow, 4 clock cycles).
+     - `rtl/dma_controller.sv`: Dedicated hardware burst memory controller ($1 + N$ cycles).
+     - `rtl/bram_memory.sv`: 4096-word dual-port synchronous Block RAM (8 KB) synthesizable to Gowin BSRAM.
+     - `rtl/heterogpu_top.sv`: Top-level SoC interconnecting all compute cores, memory arbiter, and cycle telemetry.
+   - Created verification testbench `sim/tb_heterogpu.sv` with 27 MHz clock generator and waveform dumping (`sim/waves.vcd`).
+   - Created physical FPGA pin constraints `fpga/tangnano9k/tangnano9k.cst` and timing constraints `tangnano9k.sdc` for Sipeed Tang Nano 9K (Gowin GW1NR-9).
+   - Created top-level `README.md` with architecture diagrams, speedup tables, FPGA budgets, and simulation quickstart.
 
 ## Key Empirical Results
 - **GEMM 4x4 Matrix Multiply:** 92 cycles (SIMT baseline: scalar broadcast, parallel load, parallel mul, parallel add, parallel store) vs **16 cycles (HeteroGPU AI Engine)** = **5.75x Hardware Speedup**.
