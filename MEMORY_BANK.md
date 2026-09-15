@@ -90,6 +90,7 @@
    - Verified simulation output: all 3 testbenches passed (ReLU clamp, 4-cycle Systolic Array, 9-cycle DMA burst).
    - Created physical FPGA pin constraints `hardware/fpga/tangnano9k/tangnano9k.cst` and timing constraints `tangnano9k.sdc` for Sipeed Tang Nano 9K (Gowin GW1NR-9).
    - Added `C:\iverilog\bin` permanently to user Windows `PATH` environment variable.
+   - Resolved WaveTrace VS Code extension startup error by initializing `config.wavetrace.json` in VS Code globalStorage.
 
 ## Key Empirical Results
 - **GEMM 4x4 Matrix Multiply:** 92 cycles (SIMT baseline: scalar broadcast, parallel load, parallel mul, parallel add, parallel store) vs **16 cycles (HeteroGPU AI Engine)** = **5.75x Hardware Speedup**.
