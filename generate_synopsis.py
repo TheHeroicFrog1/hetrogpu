@@ -14,7 +14,7 @@ def set_cell_background(cell, fill_hex):
     shd.set(qn('w:fill'), fill_hex)
     tcPr.append(shd)
 
-def set_cell_margins(cell, top=100, bottom=100, left=140, right=140):
+def set_cell_margins(cell, top=90, bottom=90, left=120, right=120):
     tcPr = cell._tc.get_or_add_tcPr()
     tcMar = OxmlElement('w:tcMar')
     for m, val in [('top', top), ('bottom', bottom), ('left', left), ('right', right)]:
@@ -30,26 +30,26 @@ def add_styled_heading(doc, text, level):
     run = p.add_run(text)
     run.bold = True
     if level == 1:
-        run.font.size = Pt(13.5)
+        run.font.size = Pt(13.0)
         run.font.color.rgb = RGBColor(30, 58, 138)  # Deep Navy Blue
-        p.paragraph_format.space_before = Pt(14)
-        p.paragraph_format.space_after = Pt(4)
-    elif level == 2:
-        run.font.size = Pt(11.5)
-        run.font.color.rgb = RGBColor(37, 99, 235)  # Royal Blue
-        p.paragraph_format.space_before = Pt(10)
+        p.paragraph_format.space_before = Pt(12)
         p.paragraph_format.space_after = Pt(3)
+    elif level == 2:
+        run.font.size = Pt(11.0)
+        run.font.color.rgb = RGBColor(37, 99, 235)  # Royal Blue
+        p.paragraph_format.space_before = Pt(8)
+        p.paragraph_format.space_after = Pt(2)
     elif level == 3:
-        run.font.size = Pt(10.5)
+        run.font.size = Pt(10.0)
         run.font.color.rgb = RGBColor(71, 85, 105)  # Slate
-        p.paragraph_format.space_before = Pt(6)
+        p.paragraph_format.space_before = Pt(5)
         p.paragraph_format.space_after = Pt(2)
     return p
 
 def add_body_paragraph(doc, text, bold_prefix=None, italic_prefix=None):
     p = doc.add_paragraph()
     p.paragraph_format.line_spacing = 1.15
-    p.paragraph_format.space_after = Pt(5)
+    p.paragraph_format.space_after = Pt(4.5)
     p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 
     if bold_prefix:
@@ -71,9 +71,9 @@ def add_body_paragraph(doc, text, bold_prefix=None, italic_prefix=None):
 def add_bullet_item(doc, text, bold_title=None):
     p = doc.add_paragraph()
     p.paragraph_format.line_spacing = 1.15
-    p.paragraph_format.space_after = Pt(3)
-    p.paragraph_format.left_indent = Inches(0.3)
-    p.paragraph_format.first_line_indent = Inches(-0.15)
+    p.paragraph_format.space_after = Pt(2.5)
+    p.paragraph_format.left_indent = Inches(0.28)
+    p.paragraph_format.first_line_indent = Inches(-0.14)
     p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 
     r_bullet = p.add_run("•  ")
@@ -95,8 +95,8 @@ def add_bullet_item(doc, text, bold_title=None):
 def add_caption(doc, figure_text):
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p.paragraph_format.space_before = Pt(4)
-    p.paragraph_format.space_after = Pt(10)
+    p.paragraph_format.space_before = Pt(3)
+    p.paragraph_format.space_after = Pt(8)
     p.paragraph_format.keep_with_next = True
     run = p.add_run(figure_text)
     run.font.size = Pt(9.0)
@@ -110,13 +110,13 @@ def format_table_header(row, titles, col_widths, bg_color="1E3A8A"):
         cell = row.cells[idx]
         cell.width = width
         set_cell_background(cell, bg_color)
-        set_cell_margins(cell, top=100, bottom=100, left=120, right=120)
+        set_cell_margins(cell, top=80, bottom=80, left=100, right=100)
         p = cell.paragraphs[0]
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.paragraph_format.space_after = Pt(0)
         run = p.add_run(title)
         run.bold = True
-        run.font.size = Pt(9.0)
+        run.font.size = Pt(8.5)
         run.font.color.rgb = RGBColor(255, 255, 255)
 
 def format_table_row(row, values, col_widths, is_even=False, align_left_col0=True):
@@ -125,7 +125,7 @@ def format_table_row(row, values, col_widths, is_even=False, align_left_col0=Tru
         cell = row.cells[idx]
         cell.width = width
         set_cell_background(cell, bg_color)
-        set_cell_margins(cell, top=80, bottom=80, left=100, right=100)
+        set_cell_margins(cell, top=60, bottom=60, left=90, right=90)
         p = cell.paragraphs[0]
         p.paragraph_format.space_after = Pt(0)
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT if (idx == 0 and align_left_col0) else WD_ALIGN_PARAGRAPH.CENTER
@@ -153,17 +153,17 @@ def build_synopsis():
     # -------------------------------------------------------------
     p_title = doc.add_paragraph()
     p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_title.paragraph_format.space_before = Pt(6)
+    p_title.paragraph_format.space_before = Pt(4)
     p_title.paragraph_format.space_after = Pt(2)
-    r_main = p_title.add_run("HeteroGPU: A Parameterized Heterogeneous SIMT GPU Microarchitecture with Specialized AI and Autonomous Data-Movement Engines\n")
+    r_main = p_title.add_run("HeteroGPU: A Heterogeneous SIMT GPU with Specialized AI and Data-Movement Engines\n")
     r_main.bold = True
-    r_main.font.size = Pt(13.0)
+    r_main.font.size = Pt(12.5)
     r_main.font.color.rgb = RGBColor(30, 58, 138)
 
-    r_sub = p_title.add_run("[ Architectural Proof-of-Concept & Physical FPGA Demonstration ]")
+    r_sub = p_title.add_run("[ Architectural Proof-of-Concept on FPGA ]")
     r_sub.bold = True
     r_sub.italic = True
-    r_sub.font.size = Pt(10.5)
+    r_sub.font.size = Pt(10.0)
     r_sub.font.color.rgb = RGBColor(37, 99, 235)
 
     # -------------------------------------------------------------
@@ -171,71 +171,76 @@ def build_synopsis():
     # -------------------------------------------------------------
     add_styled_heading(doc, "Abstract", level=1)
     add_body_paragraph(doc, 
-        "Modern artificial intelligence and interactive graphics have outgrown the traditional homogeneous GPU paradigm. "
-        "Conventional graphics processors rely on uniform Single Instruction, Multiple Threads (SIMT) execution cores designed for data-parallel pixel shading. "
-        "However, modern neural workloads are heavily dominated by General Matrix Multiply (GEMM) operations and continuous tensor data movement. "
-        "When forced to execute dense matrix arithmetic, standard SIMT architectures suffer from severe register pressure, scalar broadcast serialization, and uncoalesced memory stalls, while bulk data movement halts compute pipelines. "
-        "To resolve these fundamental architectural inefficiencies, this research introduces HeteroGPU, a scalable, parameterized heterogeneous GPU microarchitecture designed to balance general-purpose programmable parallelism, specialized matrix acceleration, and autonomous data movement under a unified controller and shared Block RAM (BRAM)."
+        "Most GPUs today are built around a homogeneous Single Instruction, Multiple Threads (SIMT) architecture, where identical instructions run across many parallel cores. "
+        "This works well for traditional graphics rendering and pixel shaders. "
+        "However, modern artificial intelligence workloads look very different: they are dominated by matrix multiplications (GEMM) and moving large blocks of tensor data. "
+        "When general SIMT cores are forced to do matrix math, they spend extra clock cycles broadcasting weights, running out of registers, and waiting on memory. "
+        "At the same time, using compute cores to move data back and forth leaves them sitting idle instead of doing useful calculations."
     )
     add_body_paragraph(doc,
-        "Crucially, while the physical implementation presented in this research is evaluated on an ultra-low-cost edge FPGA development board (the Sipeed Tang Nano 9K, housing a Gowin GW1NR-9 FPGA with 8,640 LUTs), "
-        "the Tang Nano 9K serves strictly as an intentional resource-constrained Proof-of-Concept (PoC) test vehicle. "
-        "The underlying microarchitecture is fully modular, parameterized, and hardware-agnostic. "
-        "It decouples execution across three specialized physical engines: (1) a 4-lane SIMT Engine featuring dedicated general-purpose register files (8 GPRs per lane) and single-cycle hardware sign-bit ReLU clamping; "
-        "(2) an AI Matrix Engine built as a 2x2 Systolic Array with 4 physical DSP Multiply-Accumulate (MAC) units implementing pipelined Kung & Leiserson 2D dataflow in 4 clock cycles; and "
-        "(3) an Autonomous Direct Memory Access (DMA) Burst Controller delivering non-blocking 1+N cycle memory block transfers with zero compute core stall overhead. "
-        "The system coordinates via a centralized memory arbiter interfacing an 8 KB dual-port synchronous Block RAM alongside a dedicated Hardware Cycle Telemetry Unit."
+        "In this project, we design and evaluate HeteroGPU, a 16-bit heterogeneous GPU architecture that solves these bottlenecks by giving different tasks to specialized hardware units. "
+        "Rather than forcing one core type to do everything, HeteroGPU combines three engines under a unified controller: "
+        "(1) a 4-core SIMT engine for general vector and graphics math, equipped with single-cycle hardware ReLU activation; "
+        "(2) a 2x2 systolic array (AI matrix engine) that completes 2x2 matrix multiplications in just 4 clock cycles using 4 DSP multiply-accumulate units; and "
+        "(3) an autonomous hardware DMA controller that copies memory blocks in 1+N cycles without stalling the compute cores. "
+        "All three engines share an 8 KB dual-port Block RAM and report cycle counts through an on-chip hardware telemetry unit."
     )
     add_body_paragraph(doc,
-        "The project has completed its software architectural modeling (Phase 1) and synthesizable SystemVerilog RTL implementation and verification (Phase 2). "
-        "Empirical benchmarks executed on the physical-cycle-accurate reference model demonstrate a 5.75x hardware speedup for 4x4 matrix multiplication (16 Tensor cycles vs. 92 SIMT cycles), a 1.23x speedup for block memory copy with 100% compute core offload (65 DMA cycles vs. 80 SIMT cycles), 95.3% SIMT core utilization on wave shaders, and an end-to-end forward pass latency of only 34 clock cycles for a calibrated 2-layer neural network. "
-        "The complete SystemVerilog RTL has been verified via Icarus Verilog and GTKWave/WaveTrace waveform simulation, passing all unit testbenches in 15 clock cycles. "
-        "Physical pin (.cst) and timing (.sdc) constraints have been prepared for the target Sipeed Tang Nano 9K FPGA at 27 MHz. "
-        "Future work (Phase 3) will execute Gowin EDA physical bitstream synthesis, on-chip JTAG deployment, and HDMI framebuffer video output for an autonomous edge AI demonstration, while detailing the direct scaling roadmap toward mid-range FPGAs (Xilinx Artix-7/Zynq) and open-source ASIC silicon fabrication (SkyWater 130nm)."
+        "We implemented this architecture in two completed phases. "
+        "First, we built a cycle-accurate software simulator in Python to verify our instruction set, memory timing, and a calibrated 2-layer neural network (achieving a 100% intercept rate in an autonomous Pong demonstration). "
+        "Second, we wrote the complete synthesizable hardware in SystemVerilog and verified it with Icarus Verilog testbenches and WaveTrace/GTKWave waveform traces. "
+        "In benchmark tests, our 2x2 matrix engine delivered a 5.75x hardware speedup over the SIMT baseline for a 4x4 matrix multiply (16 cycles vs. 92 cycles), "
+        "our DMA engine moved memory blocks in 65 cycles vs. 80 cycles while keeping compute cores 100% free, and our neural network executed an end-to-end forward pass in only 34 clock cycles."
+    )
+    add_body_paragraph(doc,
+        "We are targeting the low-cost Sipeed Tang Nano 9K FPGA (8,640 logic cells) at 27 MHz as our physical proof-of-concept. "
+        "Starting on a budget board proves that our architecture works efficiently by design rather than relying on expensive, brute-force hardware. "
+        "Because our SystemVerilog code is modular and parameterized, it can scale naturally to larger FPGAs (like the Tang Nano 20K or Xilinx Artix-7) or even be taped out as a custom silicon ASIC chip."
     )
 
     # -------------------------------------------------------------
-    # 1. INTRODUCTION & ARCHITECTURAL MOTIVATION
+    # 1. INTRODUCTION & MOTIVATION
     # -------------------------------------------------------------
-    add_styled_heading(doc, "1. Introduction & Research Motivation", level=1)
+    add_styled_heading(doc, "1. Introduction & Motivation", level=1)
     
-    add_styled_heading(doc, "1.1 The Evolution and Inherent Limits of Homogeneous SIMT GPUs", level=2)
+    add_styled_heading(doc, "1.1 Background: Why GPUs Are Built Around SIMT", level=2)
     add_body_paragraph(doc,
-        "The emergence of General-Purpose GPU (GPGPU) computing over the past two decades established the Single Instruction, Multiple Threads (SIMT) model as the dominant paradigm for massive data parallelism. "
-        "In a classic SIMT processor, groups of execution threads (e.g., warps or wavefronts) execute identical instructions in lockstep across parallel Processing Elements (PEs), with each PE operating on distinct data slices. "
-        "This approach proved exceptionally efficient for rasterization, pixel shading, and elementary vector arithmetic, where memory access patterns and instruction sequences are uniform."
-    )
-    add_body_paragraph(doc,
-        "However, modern computational demands have shifted drastically toward Deep Neural Networks (DNNs), computer vision, and real-time generative algorithms. "
-        "These workloads are characterized by dense linear algebra, specifically General Matrix Multiply (GEMM) kernels: C = A x B + C. "
-        "Executing GEMM operations on traditional homogeneous SIMT cores reveals three crippling microarchitectural bottlenecks:",
-        bold_prefix="The GEMM Bottleneck: "
-    )
-    add_bullet_item(doc, "In standard SIMT, computing an inner product across parallel cores requires repeated scalar broadcasts of weight elements across the vector register file, causing instruction serialization and pipeline stalls.", bold_title="Instruction & Broadcast Overhead: ")
-    add_bullet_item(doc, "Matrix operations require maintaining active tiles of inputs, weights, and partial accumulations. In small-scale or embedded SIMT cores, this causes heavy register spilling to on-chip memory, inflating execution latency by up to 600%.", bold_title="Register Pressure & Spills: ")
-    add_bullet_item(doc, "Standard ALUs compute multiply and add as independent, multi-cycle instruction steps. Without hardware Multiply-Accumulate (MAC) fusion and pipelined operand forwarding, ALU utilization drops sharply.", bold_title="Lack of Multiply-Accumulate Fusion: ")
-
-    add_styled_heading(doc, "1.2 The Memory Wall and the Need for Dedicated Data Movement", level=2)
-    add_body_paragraph(doc,
-        "In addition to computational inefficiencies, memory bandwidth and data movement latency have become primary constraints in high-performance computing, known widely as the 'Memory Wall'. "
-        "In conventional GPU architectures, moving data blocks between memory banks or reloading neural network weights into local scratchpads requires the SIMT cores themselves to execute repetitive LOAD and STORE loop instructions. "
-        "This software-managed data movement forces arithmetic units to sit completely idle while awaiting memory transactions, artificially depressing overall system throughput. "
-        "Modern computing mandates treating data movement as a first-class hardware primitive rather than an incidental software side-effect."
+        "For the past twenty years, GPUs have relied on the Single Instruction, Multiple Threads (SIMT) model. "
+        "In SIMT, a group of parallel cores runs the exact same instruction at the same time, but each core works on its own piece of data. "
+        "This execution style is great for graphics, image filtering, and vector arithmetic because thousands of pixels all need the exact same calculation."
     )
 
-    add_styled_heading(doc, "1.3 Proof-of-Concept Methodology and Scalability Philosophy", level=2)
+    add_styled_heading(doc, "1.2 The Problem: Why Regular SIMT Struggles with AI", level=2)
     add_body_paragraph(doc,
-        "A critical conceptual tenet of this research is the distinction between the abstract microarchitecture and the physical prototype. "
-        "HeteroGPU is designed from the ground up as a hardware-agnostic, parameterized microarchitecture. "
-        "We intentionally target the Sipeed Tang Nano 9K (Gowin GW1NR-9 FPGA) as an edge Proof-of-Concept (PoC) platform.",
-        bold_prefix="Proof-of-Concept Framing: "
+        "Modern applications increasingly rely on neural networks, which are mostly made of matrix multiplications (GEMM): C = A x B + C. "
+        "When we run matrix multiplication on standard SIMT cores, three big hardware bottlenecks show up:"
     )
+    add_bullet_item(doc, "To multiply rows and columns, weights have to be broadcast across all cores one by one, causing pipeline delays.", bold_title="Broadcast Delays: ")
+    add_bullet_item(doc, "Matrix math requires keeping many temporary numbers in memory at once. Small cores quickly run out of registers, forcing them to save and reload numbers from memory over and over (register spilling).", bold_title="Register Pressure: ")
+    add_bullet_item(doc, "Standard ALUs do multiplication and addition in separate steps. Without a fused multiply-accumulate unit and direct data forwarding between neighbors, performance drops significantly.", bold_title="Separate Multiply and Add: ")
     add_body_paragraph(doc,
-        "By enforcing strict physical constraints—a 16-bit word size, a 4-core SIMT array, a 2x2 systolic array, and 8 KB of BRAM within an 8,640-LUT budget—we prove that "
-        "architectural specialization delivers dramatic efficiency gains (5.75x speedup and 100% compute offloading) through intelligent microarchitectural decoupling, "
-        "without requiring massive brute-force hardware. "
-        "Because the underlying SystemVerilog RTL is modular, fully synthesizable, and parameterized, the exact same architectural principles directly scale to larger FPGAs "
-        "(such as the Tang Nano 20K or Xilinx Artix-7/Zynq) and physical silicon ASICs via open-source tapeout programs (e.g., SkyWater 130nm)."
+        "Another major issue is data movement (often called the 'Memory Wall'). "
+        "In typical small GPUs, if you want to load new neural network weights or move an image sprite, the compute cores themselves must execute repetitive LOAD and STORE loops. "
+        "While they are busy moving bytes around, they cannot do any actual math. "
+        "Data movement needs to be handled by dedicated hardware so compute cores can keep working."
+    )
+
+    add_styled_heading(doc, "1.3 Our Solution: The HeteroGPU Architecture", level=2)
+    add_body_paragraph(doc,
+        "To solve these issues on edge hardware, HeteroGPU separates work across three specialized physical engines:",
+        bold_prefix="The Three Core Engines: "
+    )
+    add_bullet_item(doc, "4 parallel cores with 8 registers each, designed for vertex shading, vector math, and single-cycle hardware ReLU activation.", bold_title="1. SIMT Vector Engine: ")
+    add_bullet_item(doc, "A 2x2 grid of 4 DSP multiply-accumulate units. Data flows smoothly across the grid (Kung & Leiserson systolic flow), finishing a 2x2 matrix multiply in exactly 4 clock cycles.", bold_title="2. AI Matrix Engine: ")
+    add_bullet_item(doc, "A hardware block transfer unit that copies memory in 1+N clock cycles without using any SIMT instruction cycles.", bold_title="3. DMA Controller: ")
+    add_bullet_item(doc, "An 8 KB dual-port Block RAM (4096 16-bit words) with a memory arbiter and live cycle telemetry counters.", bold_title="4. Shared Memory & Telemetry: ")
+
+    add_styled_heading(doc, "1.4 Proof of Concept & Scalability Approach", level=2)
+    add_body_paragraph(doc,
+        "It is important to understand that HeteroGPU is not just tied to one tiny chip. "
+        "We chose the Sipeed Tang Nano 9K FPGA ($15 board with 8,640 logic cells) specifically as our physical Proof-of-Concept (PoC). "
+        "If an architecture can deliver a 5.75x speedup inside such strict resource limits, it proves that the design is fundamentally sound. "
+        "Because all our SystemVerilog code is parameterized, the same design can be scaled up to larger FPGAs or custom ASIC silicon."
     )
 
     # EMBED FIGURE 1 (Architecture Diagram)
@@ -243,69 +248,59 @@ def build_synopsis():
     if os.path.exists(arch_img_path):
         p_img = doc.add_paragraph()
         p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_img.paragraph_format.space_before = Pt(6)
+        p_img.paragraph_format.space_before = Pt(4)
         p_img.paragraph_format.space_after = Pt(2)
         doc.add_picture(arch_img_path, width=Inches(6.4))
-        add_caption(doc, "Figure 1: Architectural Comparison between Traditional Homogeneous GPU (left) and the Proposed HeteroGPU Proof-of-Concept Architecture (right), illustrating specialized engine decoupling, autonomous DMA, and shared BRAM arbitration.")
+        add_caption(doc, "Figure 1: Comparison between a Traditional Homogeneous GPU (left) and our HeteroGPU Proof-of-Concept Architecture (right), showing engine decoupling and shared BRAM.")
 
     # -------------------------------------------------------------
-    # 2. COMPREHENSIVE LITERATURE SURVEY & RELATED RESEARCH
+    # 2. LITERATURE SURVEY & RELATED WORK
     # -------------------------------------------------------------
-    add_styled_heading(doc, "2. Literature Survey & Related Research", level=1)
+    add_styled_heading(doc, "2. Literature Survey & Related Work", level=1)
     add_body_paragraph(doc,
-        "The design of HeteroGPU is grounded in foundational computer architecture literature and advances in domain-specific acceleration. "
-        "This section reviews the theoretical origins of systolic computation, commercial tensor architectures, spatial neural accelerators, and recent open-source FPGA GPU developments, explicitly highlighting the research gap HeteroGPU addresses."
+        "Our architecture connects ideas from foundational computer engineering papers with modern commercial hardware and open-source FPGA designs."
     )
 
-    add_styled_heading(doc, "2.1 Foundational Systolic Arrays and Dataflow Computing", level=2)
+    add_styled_heading(doc, "2.1 Foundational Systolic Arrays", level=2)
     add_body_paragraph(doc,
-        "The theoretical foundation for modern matrix acceleration was established by H. T. Kung and C. E. Leiserson in their seminal 1979 work on Systolic Arrays [1]. "
-        "Kung and Leiserson demonstrated that regular networks of simple processing elements can rhythmically compute and pass data through a multi-dimensional array without returning partial results to external memory. "
-        "By allowing data operands to be reused across neighboring processing cells, systolic architectures dramatically minimize memory access bandwidth and achieve near-optimal hardware utilization for matrix and convolution operations. "
-        "HeteroGPU directly implements Kung & Leiserson 2D dataflow principles in its AI Matrix Engine."
+        "In 1979, H. T. Kung and C. E. Leiserson published their classic paper on Systolic Arrays [1]. "
+        "They showed that instead of reading and writing every single number back to main memory, data can flow rhythmically through a grid of small processing cells. "
+        "Each cell multiplies, adds, and passes the numbers directly to its neighbors. "
+        "This saves memory bandwidth and keeps hardware busy. HeteroGPU uses this exact 2D dataflow for its matrix engine."
     )
 
-    add_styled_heading(doc, "2.2 Commercial Matrix Acceleration: Google TPU and NVIDIA Tensor Cores", level=2)
+    add_styled_heading(doc, "2.2 Commercial Accelerators: Google TPU and NVIDIA Tensor Cores", level=2)
     add_body_paragraph(doc,
-        "The practical efficacy of dedicated matrix hardware was demonstrated at datacenter scale by Jouppi et al. (2017) with the Google Tensor Processing Unit (TPU v1) [2]. "
-        "The TPU deployed a 256x256 2D systolic Matrix Multiply Unit (MXU) executing 8-bit integer matrix math for neural network inference, achieving 15x to 30x higher throughput per watt compared to contemporary general-purpose GPUs and CPUs. "
-        "Jouppi et al. proved that eliminating general instruction fetch, decode, and register-file overhead in favor of a specialized matrix pipeline is the most energy-efficient path for neural processing."
+        "In 2017, Google published their landmark ISCA paper on the Tensor Processing Unit (TPU v1) [2]. "
+        "They showed that a 2D systolic matrix unit was 15x to 30x faster and more energy-efficient than regular CPUs and GPUs for neural network inference, "
+        "proving that dedicated matrix hardware is essential for AI."
     )
     add_body_paragraph(doc,
-        "Recognizing this fundamental shift, NVIDIA introduced Tensor Cores into commercial GPU architectures beginning with Volta (V100) in 2017, as analyzed in depth by Markidis et al. [3]. "
-        "NVIDIA augmented standard CUDA SIMT streaming multiprocessors with dedicated warp-level matrix multiply-accumulate hardware (WMMA / HMMA instructions) capable of computing 4x4x4 matrix operations in a single cycle. "
-        "This architectural evolution validated that modern commercial GPUs must be heterogeneous internally, housing specialized matrix engines directly alongside traditional SIMT ALUs."
-    )
-
-    add_styled_heading(doc, "2.3 Spatial AI Accelerators and Heterogeneous Co-Processors", level=2)
-    add_body_paragraph(doc,
-        "In academic research, Chen, Emer, and Sze introduced the Eyeriss architecture [4], demonstrating that energy consumption in deep learning hardware is dominated by on-chip and off-chip memory transactions rather than arithmetic ALU switching. "
-        "Eyeriss introduced the 'Row-Stationary' dataflow to maximize local convolutional data reuse. "
-        "Sze et al.'s comprehensive survey on efficient processing of deep neural networks [5] emphasized the imperative of hardware/software co-design and explicit data movement mechanisms."
-    )
-    add_body_paragraph(doc,
-        "More recently, Genc et al. introduced Berkeley Gemmini [6], an open-source full-stack DNN accelerator generator coupling a parameterized systolic array with RISC-V processor cores via the RoCC interface. "
-        "Similarly, Alaei and Yazdanpanah (2025) surveyed modern heterogeneous CPU-GPU systems [7], pointing out persistent challenges in memory sharing, synchronization overhead, and execution co-scheduling between distinct compute units."
+        "Around the same time, NVIDIA added Tensor Cores to their Volta architecture (analyzed by Markidis et al. [3]). "
+        "Instead of relying only on traditional CUDA cores, NVIDIA put dedicated 4x4 matrix units right next to them inside each Streaming Multiprocessor. "
+        "This proved that modern GPUs must be heterogeneous: general SIMT cores for graphics, plus dedicated matrix units for AI."
     )
 
-    add_styled_heading(doc, "2.4 Open-Source FPGA GPU Projects and the Unaddressed Research Gap", level=2)
+    add_styled_heading(doc, "2.3 Spatial AI Accelerators and the Memory Wall", level=2)
     add_body_paragraph(doc,
-        "In recent years, the open-source hardware community has produced pioneering educational GPU designs targeting FPGAs. "
-        "Most prominent among these is Adam Majmudar's 'tiny-gpu' (2024) [8], a minimal, synthesizable SIMT GPU written in Verilog to educate students on parallel execution, instruction dispatch, and memory coalescing. "
-        "Similarly, projects such as 'smol-gpu' and 'Nyuzi' provide functional multi-threaded SIMT cores."
+        "Research from MIT (Eyeriss by Chen et al. [4]) and surveys by Sze et al. [5] showed that moving data around a chip uses far more energy than doing math. "
+        "They showed that accelerators must be designed around data reuse. "
+        "More recently, Berkeley created Gemmini [6], an open-source systolic co-processor generator for RISC-V, and Alaei & Yazdanpanah [7] surveyed CPU-GPU coordination challenges."
     )
+
+    add_styled_heading(doc, "2.4 Open-Source FPGA GPUs and the Research Gap", level=2)
     add_body_paragraph(doc,
-        "While these open-source educational GPU implementations are invaluable for teaching classic graphics pipelines, they universally suffer from a critical limitation: "
-        "they are strictly homogeneous SIMT architectures. "
-        "None of them incorporate dedicated systolic matrix units, nor do they include autonomous hardware DMA engines. "
-        "Consequently, when subjected to modern machine learning or matrix-heavy workloads, these educational GPUs experience the identical performance collapse seen in early graphics processors. "
-        "HeteroGPU bridges this exact technological gap by providing the first open, fully documented, 16-bit heterogeneous GPU architecture that unifies SIMT, a Systolic Array, and DMA into a compact, synthesizable proof-of-concept.",
-        bold_prefix="The Unaddressed Research Gap: "
+        "Recently, great educational open-source GPUs have appeared, such as Adam Majmudar's 'tiny-gpu' (2024) [8] and 'smol-gpu'. "
+        "These projects are great for learning how basic SIMT pipelines work. "
+        "However, they all share one limitation: they are strictly homogeneous SIMT. "
+        "None of them have a dedicated matrix unit or hardware DMA. When they try to run AI workloads, they suffer from the same slowdowns as early GPUs. "
+        "HeteroGPU fills this exact gap by bringing heterogeneous specialization into a small, open-source FPGA design.",
+        bold_prefix="The Research Gap: "
     )
 
     # TABLE 1: Literature Comparison Table
-    add_styled_heading(doc, "2.5 Architectural Comparison with Prior Research", level=2)
-    add_body_paragraph(doc, "Table 1 compares the architectural features of HeteroGPU against commercial accelerators and existing open-source FPGA GPU designs:")
+    add_styled_heading(doc, "2.5 Comparison with Existing Architectures", level=2)
+    add_body_paragraph(doc, "Table 1 compares HeteroGPU against traditional GPUs, commercial accelerators, and existing educational FPGA GPUs:")
 
     t1 = doc.add_table(rows=6, cols=5)
     t1.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -317,7 +312,7 @@ def build_synopsis():
     t1_rows = [
         ["Core Architecture", "Homogeneous SIMT", "Specialized ASIC / Hybrid", "Homogeneous SIMT", "Heterogeneous SoC"],
         ["Matrix / GEMM Engine", "Software SIMT loops", "2D Systolic MXU / Tensor", "None (ALU math only)", "2x2 Systolic Array TPU"],
-        ["Data Movement", "Software LOAD/STORE", "External PCIe / DMA", "Software loops only", "Autonomous Hardware DMA"],
+        ["Data Movement", "Software LOAD/STORE", "External PCIe / DMA", "Software loops only", "Hardware DMA Engine"],
         ["Activation Hardware", "Multi-cycle shader", "Specialized vector ALU", "Software branch CMP", "Single-cycle sign ReLU"],
         ["Target Platform", "ASIC Silicon", "Datacenter ASIC", "FPGA / Simulation", "Edge FPGA PoC -> ASIC"]
     ]
@@ -325,86 +320,77 @@ def build_synopsis():
         format_table_row(t1.rows[r_idx + 1], row_vals, col_widths_t1, is_even=(r_idx % 2 == 1))
 
     # -------------------------------------------------------------
-    # 3. PROBLEM FORMULATION & RESEARCH OBJECTIVES
+    # 3. PROBLEM FORMULATION & OBJECTIVES
     # -------------------------------------------------------------
-    add_styled_heading(doc, "3. Problem Formulation & Research Objectives", level=1)
+    add_styled_heading(doc, "3. Problem Formulation & Objectives", level=1)
     
     add_styled_heading(doc, "3.1 Problem Formulation", level=2)
     add_body_paragraph(doc,
-        "The central engineering problem addressed in this research is formulated as follows: "
-        "'How can a resource-constrained, programmable 16-bit GPU architecture overcome the O(N^3) computational inefficiency and memory latency bottlenecks of general SIMT execution on edge FPGA platforms through heterogeneous engine specialization, while establishing a viable proof-of-concept for scalable hardware implementation?'"
+        "Can a small, programmable 16-bit GPU achieve significantly higher efficiency on edge hardware by combining general SIMT cores with a dedicated matrix engine and autonomous DMA, "
+        "and can we verify this as a working proof-of-concept on an entry-level FPGA?"
     )
-    add_body_paragraph(doc,
-        "Specifically, the research tackles three interrelated challenges:",
-        bold_prefix="Core Challenges: "
-    )
-    add_bullet_item(doc, "General SIMT ALUs lack hardware operand reuse, requiring O(N^3) memory operations for NxN matrix multiplies.", bold_title="1. Arithmetic Inefficiency: ")
-    add_bullet_item(doc, "Bulk frame copying and weight updates tie up general shader cores, causing pipeline stalls.", bold_title="2. Processor Idling: ")
-    add_bullet_item(doc, "Low-cost edge FPGAs (such as Gowin GW1NR-9 with 8,640 LUTs) cannot accommodate complex multi-precision floating point units, necessitating optimized 16-bit fixed-point arithmetic.", bold_title="3. Hardware Resource Constraints: ")
 
-    add_styled_heading(doc, "3.2 Specific Research Objectives", level=2)
-    add_bullet_item(doc, "Design a modular 16-bit heterogeneous GPU architecture combining a 4-core SIMT engine, a 2x2 Systolic Array AI engine, a hardware DMA burst controller, and an 8 KB dual-port BRAM.", bold_title="Objective 1 (Architectural Specification): ")
-    add_bullet_item(doc, "Develop a cycle-accurate software reference simulator in Python to validate the instruction set architecture, memory arbitration, and physical cycle timing prior to hardware implementation.", bold_title="Objective 2 (Software Golden Model): ")
-    add_bullet_item(doc, "Implement fully synthesizable SystemVerilog RTL for all compute blocks and verify hardware correctness through cycle-accurate Icarus Verilog testbenches and GTKWave/WaveTrace waveform inspection.", bold_title="Objective 3 (Synthesizable RTL Design): ")
-    add_bullet_item(doc, "Rigorously benchmark the heterogeneous design against a validated SIMT-only baseline across vector shaders, GEMM matrix multiplication, block memory transfers, and neural network inference.", bold_title="Objective 4 (Empirical Evaluation): ")
-    add_bullet_item(doc, "Synthesize and map the verified RTL onto the Sipeed Tang Nano 9K FPGA (Gowin GW1NR-9), achieving timing closure at 27 MHz as a working physical proof-of-concept.", bold_title="Objective 5 (Physical FPGA Deployment): ")
+    add_styled_heading(doc, "3.2 Specific Objectives", level=2)
+    add_bullet_item(doc, "Design a modular 16-bit heterogeneous GPU architecture combining 4 SIMT cores, a 2x2 systolic array, a hardware DMA controller, and an 8 KB dual-port BRAM.", bold_title="Objective 1 (Architecture Design): ")
+    add_bullet_item(doc, "Build a cycle-accurate reference simulator in Python to verify the instruction set, neural network accuracy, and clock cycle timings.", bold_title="Objective 2 (Software Golden Model): ")
+    add_bullet_item(doc, "Write synthesizable SystemVerilog RTL for all components and verify them using automated testbenches and waveform viewers (Icarus Verilog, GTKWave, WaveTrace).", bold_title="Objective 3 (SystemVerilog RTL): ")
+    add_bullet_item(doc, "Benchmark the design against an identical SIMT baseline on matrix multiplication, memory copying, wave shaders, and neural network inference.", bold_title="Objective 4 (Benchmarking): ")
+    add_bullet_item(doc, "Synthesize and run the design on the Sipeed Tang Nano 9K FPGA at 27 MHz with HDMI video output as an edge proof-of-concept.", bold_title="Objective 5 (FPGA Demonstration): ")
 
     # -------------------------------------------------------------
-    # 4. CURRENT ACHIEVEMENTS: WHAT WE HAVE ACHIEVED
+    # 4. CURRENT ACHIEVEMENTS: WHAT WE HAVE COMPLETED
     # -------------------------------------------------------------
-    add_styled_heading(doc, "4. Current Progress: What We Have Achieved (Phases 1 & 2)", level=1)
+    add_styled_heading(doc, "4. Current Progress: What We Have Completed (Phases 1 & 2)", level=1)
     add_body_paragraph(doc,
-        "The project has successfully executed both Phase 1 (Architectural Simulation & Golden Reference Model) and Phase 2 (Synthesizable SystemVerilog RTL Implementation & Verification). "
-        "All hardware components have been designed, simulated, and empirically verified against cycle-accurate baselines."
+        "We have completed both the architectural modeling (Phase 1) and the full synthesizable SystemVerilog RTL design and verification (Phase 2)."
     )
 
-    add_styled_heading(doc, "4.1 Phase 1: Software Architectural Golden Model (Python)", level=2)
+    add_styled_heading(doc, "4.1 Phase 1: Python Architectural Simulator (Golden Model)", level=2)
     add_body_paragraph(doc,
-        "A complete 16-bit register-transfer level simulator was developed in Python, enforcing hardware behavior including 16-bit two's complement arithmetic, modular register file behavior, and dual-port BRAM addressing. "
-        "The simulator consists of clean, modular components:",
-        bold_prefix="Golden Model Implementation: "
+        "We built a cycle-accurate 16-bit simulator in Python that models real hardware behavior, including two's complement math, register files, and dual-port BRAM memory:",
+        bold_prefix="Simulator Components: "
     )
-    add_bullet_item(doc, "Implements an 8-register general-purpose file (R0-R7) with 16-bit modular arithmetic and hardware RELU clamping.", bold_title="processing_element.py: ")
-    add_bullet_item(doc, "Controls 4 lockstep PE cores with arithmetic broadcast and LOAD_PARALLEL / STORE_PARALLEL memory vector instructions.", bold_title="simt_engine.py: ")
-    add_bullet_item(doc, "Implements Kung & Leiserson 2D pipelined dataflow, executing 2x2 matrix multiplication in exactly 4 clock cycles with 16-bit fixed-point scaling (>>> 5).", bold_title="matrix_engine.py: ")
-    add_bullet_item(doc, "Executes non-blocking burst transfers in 1+N clock cycles (1 setup cycle + N word cycles).", bold_title="dma_engine.py: ")
-    add_bullet_item(doc, "Simulates 4096 16-bit words (8 KB) organized into framebuffers (0-1023), AI weights (1100-1127), state buffers, and sprite memory.", bold_title="memory.py: ")
-    add_bullet_item(doc, "Top-level controller with real-time hardware cycle telemetry tracking execution cycles across SIMT, AI, DMA, and overall SoC.", bold_title="heterogpu.py: ")
-    add_bullet_item(doc, "A calibrated 2-layer MLP neural network running entirely on the heterogeneous architecture, achieving 100% intercept accuracy across 1,000 continuous frames.", bold_title="ai_model.py: ")
-    add_bullet_item(doc, "Interactive Pygame graphical demonstration with a real-time Hardware Telemetry HUD supporting 4 live operational modes.", bold_title="game_demo.py: ")
+    add_bullet_item(doc, "Models 8 general-purpose registers (R0-R7) with 16-bit math and single-cycle hardware ReLU clamping.", bold_title="processing_element.py: ")
+    add_bullet_item(doc, "Controls 4 lockstep cores with parallel arithmetic and LOAD_PARALLEL / STORE_PARALLEL memory access.", bold_title="simt_engine.py: ")
+    add_bullet_item(doc, "Simulates a 2x2 systolic array using Kung & Leiserson dataflow, completing a 2x2 matrix multiply in 4 clock cycles with fixed-point scaling.", bold_title="matrix_engine.py: ")
+    add_bullet_item(doc, "Performs burst block memory copies in 1+N cycles without tying up the compute cores.", bold_title="dma_engine.py: ")
+    add_bullet_item(doc, "Simulates 4096 16-bit words (8 KB) split into framebuffers, AI weights, input buffers, and sprite memory.", bold_title="memory.py: ")
+    add_bullet_item(doc, "Top-level controller with live telemetry counters tracking execution cycles for SIMT, AI, DMA, and overall SoC.", bold_title="heterogpu.py: ")
+    add_bullet_item(doc, "A 2-layer MLP neural network running on our simulated hardware, achieving a 100% paddle intercept rate across 1,000 test frames.", bold_title="ai_model.py: ")
+    add_bullet_item(doc, "An interactive Pygame showcase with 4 live operating modes and a real-time Hardware Telemetry HUD.", bold_title="game_demo.py: ")
 
     add_styled_heading(doc, "4.2 Phase 2: Synthesizable SystemVerilog RTL Implementation", level=2)
     add_body_paragraph(doc,
-        "Following validation of the software model, the architecture was translated 1-to-1 into synthesizable SystemVerilog modules located in the hardware/rtl/ directory:",
-        bold_prefix="Synthesizable Hardware Modules: "
+        "We translated the validated Python model 1-to-1 into synthesizable SystemVerilog modules under hardware/rtl/:",
+        bold_prefix="Hardware RTL Modules: "
     )
-    add_bullet_item(doc, "hardware/rtl/pe_core.sv: 16-bit ALU (ADD, SUB, MUL, CMP_GT, MAX) with a dedicated sign-bit inspection multiplexer ((op1[15] == 1'b1) ? 0 : op1) for zero-latency ReLU activation.", bold_title="PE Core: ")
-    add_bullet_item(doc, "hardware/rtl/simt_engine.sv: 4-lane parallel SIMT array with lockstep instruction decoding and parallel vector memory access.", bold_title="SIMT Engine: ")
-    add_bullet_item(doc, "hardware/rtl/systolic_array_2x2.sv: 2x2 Tensor Core with 4 physical DSP MAC cells utilizing pipelined horizontal/vertical operand streaming, completing GEMM in 4 clock cycles.", bold_title="Systolic Array TPU: ")
-    add_bullet_item(doc, "hardware/rtl/dma_controller.sv: Hardware FSM burst controller streaming 16-bit words across memory in 1+N cycles.", bold_title="DMA Controller: ")
-    add_bullet_item(doc, "hardware/rtl/bram_memory.sv: 4096-word dual-port synchronous Block RAM (8 KB) directly synthesizable to Gowin BSRAM blocks.", bold_title="Synchronous BRAM: ")
-    add_bullet_item(doc, "hardware/rtl/heterogpu_top.sv: Top-level SoC interconnecting all compute cores, memory arbiter, and telemetry counters.", bold_title="HeteroGPU Top SoC: ")
+    add_bullet_item(doc, "hardware/rtl/pe_core.sv: 16-bit ALU (ADD, SUB, MUL, CMP_GT, MAX) with a hardware sign-bit multiplexer ((op1[15] == 1'b1) ? 0 : op1) for instant ReLU clamping without branching.", bold_title="PE Core: ")
+    add_bullet_item(doc, "hardware/rtl/simt_engine.sv: 4-lane parallel SIMT array with lockstep instruction broadcast and parallel memory vector access.", bold_title="SIMT Engine: ")
+    add_bullet_item(doc, "hardware/rtl/systolic_array_2x2.sv: 2x2 Tensor Core with 4 physical DSP MAC cells using pipelined operand streaming, completing GEMM in 4 clock cycles.", bold_title="Systolic Array: ")
+    add_bullet_item(doc, "hardware/rtl/dma_controller.sv: Hardware FSM burst controller streaming 16-bit words in 1+N clock cycles.", bold_title="DMA Controller: ")
+    add_bullet_item(doc, "hardware/rtl/bram_memory.sv: 4096-word dual-port synchronous Block RAM (8 KB) that maps cleanly to Gowin BSRAM blocks.", bold_title="Block RAM: ")
+    add_bullet_item(doc, "hardware/rtl/heterogpu_top.sv: Top-level SoC connecting all engines, the memory arbiter, and telemetry registers.", bold_title="HeteroGPU Top SoC: ")
 
     add_styled_heading(doc, "4.3 Hardware Verification & Waveform Analysis", level=2)
     add_body_paragraph(doc,
-        "The RTL implementation was rigorously verified using an automated SystemVerilog testbench (hardware/sim/tb_heterogpu.sv) running under Icarus Verilog and vvp. "
-        "The simulation verified all hardware subsystems in 15 total clock cycles:",
-        bold_prefix="Verification Output: "
+        "We tested the RTL using an automated SystemVerilog testbench (hardware/sim/tb_heterogpu.sv) compiled with Icarus Verilog and run with vvp. "
+        "All hardware tests passed in 15 clock cycles:",
+        bold_prefix="Testbench Results: "
     )
-    add_bullet_item(doc, "Verified single-cycle negative clamping of 16-bit signed values to 0x0000.", bold_title="Test 1 (PE ReLU): ")
-    add_bullet_item(doc, "Verified 2x2 matrix multiply completed in exactly 4 clock cycles (telemetry_ai = 4).", bold_title="Test 2 (Systolic GEMM): ")
-    add_bullet_item(doc, "Verified 8-word continuous memory burst completed in exactly 9 clock cycles (telemetry_dma = 9).", bold_title="Test 3 (DMA Burst): ")
+    add_bullet_item(doc, "Confirmed negative 16-bit numbers are clamped to 0x0000 in one clock cycle.", bold_title="Test 1 (PE ReLU): ")
+    add_bullet_item(doc, "Confirmed 2x2 matrix multiply finishes in exactly 4 clock cycles.", bold_title="Test 2 (Systolic GEMM): ")
+    add_bullet_item(doc, "Confirmed an 8-word memory burst finishes in exactly 9 clock cycles.", bold_title="Test 3 (DMA Burst): ")
     add_body_paragraph(doc,
-        "Signal integrity, clocking, and register transitions were dumped to hardware/sim/waves.vcd and visually inspected in WaveTrace and GTKWave. "
-        "Cross-platform compilation scripts (run_sim.ps1, run_sim.bat) and an EDA filelist (filelist.f) were established."
+        "Waveforms were dumped to hardware/sim/waves.vcd and inspected in WaveTrace and GTKWave. "
+        "We also created cross-platform run scripts (run_sim.ps1, run_sim.bat) and an EDA filelist (filelist.f)."
     )
 
     # -------------------------------------------------------------
-    # 5. EMPIRICAL BENCHMARK EVALUATION & RESULTS
+    # 5. BENCHMARK RESULTS
     # -------------------------------------------------------------
-    add_styled_heading(doc, "5. Empirical Evaluation & Benchmark Results", level=1)
+    add_styled_heading(doc, "5. Benchmark Results & Performance Evaluation", level=1)
     add_body_paragraph(doc,
-        "HeteroGPU was evaluated across four rigorous benchmark tests against an identical, fully simulated SIMT baseline executing instruction-by-instruction in register-transfer logic."
+        "We evaluated HeteroGPU across four benchmark workloads against an identical, fully simulated SIMT baseline executing instruction-by-instruction in register-transfer logic."
     )
 
     # EMBED FIGURE 2 (Benchmark Results Graph)
@@ -412,16 +398,16 @@ def build_synopsis():
     if os.path.exists(bench_img_path):
         p_img2 = doc.add_paragraph()
         p_img2.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_img2.paragraph_format.space_before = Pt(6)
+        p_img2.paragraph_format.space_before = Pt(4)
         p_img2.paragraph_format.space_after = Pt(2)
         doc.add_picture(bench_img_path, width=Inches(6.4))
-        add_caption(doc, "Figure 2: Empirical Performance Results across Four Hardware Benchmarks, highlighting the 5.75x GEMM speedup, 1.23x DMA burst speedup with 100% compute cores freed, and the 34-cycle AI forward pass.")
+        add_caption(doc, "Figure 2: Benchmark Results across Four Hardware Tests, highlighting the 5.75x GEMM speedup, 1.23x DMA copy speedup with 100% cores freed, and the 34-cycle AI forward pass.")
 
-    add_styled_heading(doc, "5.1 Benchmark Findings Discussion", level=2)
-    add_bullet_item(doc, "Computing a 4x4 matrix multiplication required 92 clock cycles on the SIMT baseline due to scalar weight broadcasts, register shuffling, and multi-cycle arithmetic loops. The HeteroGPU 2x2 Systolic Array completed the equivalent computation in just 16 clock cycles (4 tiled passes of 4 cycles each), yielding a 5.75x Hardware Speedup.", bold_title="Test 1 (GEMM 4x4 Matrix Multiply): ")
-    add_bullet_item(doc, "Relocating a 64-word memory block required 80 cycles on the SIMT cores and 100% core stall time. The DMA controller executed the transfer in 65 cycles (1.23x speedup) while keeping SIMT cores 100% idle and available for parallel shading.", bold_title="Test 2 (Memory Block Copy): ")
-    add_bullet_item(doc, "Executing an animated mathematical wave shader across the framebuffer achieved 95.3% active compute utilization across the 4 SIMT cores, proving high pipeline efficiency for vector graphics.", bold_title="Test 3 (SIMT Wave Shader): ")
-    add_bullet_item(doc, "Executing a complete forward pass of the 2-layer neural network required only 34 clock cycles total: 24 cycles (70.6%) on the Systolic Array for dense linear layers, 5 cycles (14.7%) on the SIMT cores for parallel ReLU, and 5 cycles (14.7%) on the DMA controller for state buffering.", bold_title="Test 4 (End-to-End AI Forward Pass): ")
+    add_styled_heading(doc, "5.1 Benchmark Findings", level=2)
+    add_bullet_item(doc, "A 4x4 matrix multiplication took 92 clock cycles on the SIMT baseline due to scalar weight broadcasts and multi-cycle arithmetic loops. Our 2x2 systolic array finished in only 16 clock cycles (4 passes of 4 cycles each), giving a 5.75x Hardware Speedup.", bold_title="Test 1 (GEMM 4x4 Matrix Multiply): ")
+    add_bullet_item(doc, "Copying 64 words took 80 cycles on the SIMT cores and completely tied them up. The DMA controller finished in 65 cycles (1.23x speedup) while keeping SIMT cores 100% idle and available for other tasks.", bold_title="Test 2 (Memory Block Copy): ")
+    add_bullet_item(doc, "Running an animated wave shader achieved 95.3% active compute utilization across the 4 SIMT cores, showing high efficiency on vector graphics.", bold_title="Test 3 (SIMT Wave Shader): ")
+    add_bullet_item(doc, "A complete forward pass of the 2-layer neural network took only 34 clock cycles total: 24 cycles (70.6%) on the systolic array for matrix layers, 5 cycles (14.7%) on the SIMT cores for parallel ReLU, and 5 cycles (14.7%) on the DMA controller for buffer setup.", bold_title="Test 4 (End-to-End AI Forward Pass): ")
 
     # TABLE 2: Benchmark Summary Table
     add_styled_heading(doc, "5.2 Quantitative Performance Summary", level=2)
@@ -442,46 +428,40 @@ def build_synopsis():
         format_table_row(t2.rows[r_idx + 1], row_vals, col_widths_t2, is_even=(r_idx % 2 == 1))
 
     # -------------------------------------------------------------
-    # 6. SCALABILITY ANALYSIS & FUTURE SILICON ROADMAP
+    # 6. SCALABILITY & NEXT STEPS
     # -------------------------------------------------------------
-    add_styled_heading(doc, "6. Scalability Analysis & Future Silicon Roadmap", level=1)
+    add_styled_heading(doc, "6. Scalability Analysis & Next Steps: From Proof-of-Concept to Real Silicon", level=1)
     add_body_paragraph(doc,
-        "A defining strength of the HeteroGPU research is that the Sipeed Tang Nano 9K implementation is not a closed dead-end; "
-        "rather, it is the foundational Proof-of-Concept for a scalable microarchitecture. "
-        "Because all SystemVerilog modules are parameter-driven (e.g., parameterized NUM_CORES, MESH_DIM, and ADDR_WIDTH), "
-        "the design scales seamlessly from budget edge FPGAs to high-end FPGA accelerators and custom physical silicon (ASIC)."
+        "A major advantage of HeteroGPU is that our Tang Nano 9K implementation is not a dead-end. "
+        "It is a working proof-of-concept designed with modular parameters (NUM_CORES, MESH_DIM, ADDR_WIDTH). "
+        "The exact same design can scale up to larger FPGAs and custom silicon."
     )
 
-    add_styled_heading(doc, "6.1 Tier 1: Edge Proof-of-Concept Deployment (Immediate Phase 3 Target)", level=2)
-    add_body_paragraph(doc,
-        "The immediate next step executes physical bitstream synthesis using Gowin EDA for the Gowin GW1NR-LV9QN88PC6/I5 FPGA on the Tang Nano 9K development board:",
-        bold_prefix="Tang Nano 9K Milestones: "
-    )
-    add_bullet_item(doc, "Synthesis, placement, and routing of hardware/rtl/*.sv using the Gowin EDA synthesis toolchain with physical constraints (tangnano9k.cst, tangnano9k.sdc) closed at 27 MHz.", bold_title="1. Physical Synthesis & Timing Closure: ")
-    add_bullet_item(doc, "Flashing the generated .fs bitstream into onboard flash via high-speed USB-JTAG using the Gowin Programmer.", bold_title="2. JTAG Bitstream Programming: ")
-    add_bullet_item(doc, "Integrating a TMDS DVI/HDMI encoder core to serialize the 32x32 BRAM framebuffer into a 640x480 @ 60 Hz HDMI video signal, allowing real-time rendering on standard computer monitors without PC tethering.", bold_title="3. Hardware HDMI/DVI Video Generation: ")
-    add_bullet_item(doc, "Demonstrating the autonomous neural network Pong game running 100% on physical FPGA silicon, driving video and computing trajectory decisions in 34 cycles per frame.", bold_title="4. Standalone AI Showcase: ")
+    add_styled_heading(doc, "6.1 Immediate Next Steps: Physical FPGA Demonstration (Tang Nano 9K)", level=2)
+    add_bullet_item(doc, "Synthesize and route hardware/rtl/*.sv using Gowin EDA with pin and timing constraints closed at 27 MHz.", bold_title="1. Physical Bitstream Synthesis: ")
+    add_bullet_item(doc, "Program the bitstream (.fs file) to the Tang Nano 9K over USB-JTAG and verify clocked execution on the onboard oscillator.", bold_title="2. On-Chip JTAG Flashing: ")
+    add_bullet_item(doc, "Add a TMDS DVI/HDMI encoder to scan out the 32x32 framebuffer from BRAM to a standard 640x480 @ 60 Hz monitor display.", bold_title="3. Hardware HDMI Video Output: ")
+    add_bullet_item(doc, "Run the autonomous neural network Pong game 100% on the FPGA, driving the screen and making trajectory decisions in 34 cycles per frame without a host PC.", bold_title="4. Standalone AI Demo: ")
 
-    add_styled_heading(doc, "6.2 Tier 2 & Tier 3: Horizontal & Vertical Scaling to Mid-Range FPGAs", level=2)
+    add_styled_heading(doc, "6.2 Scaling Up to Larger FPGAs", level=2)
     add_body_paragraph(doc,
-        "Moving beyond the 8,640-LUT budget of the Tang Nano 9K, the architecture expands horizontally (more parallel SIMT cores) and vertically (larger systolic arrays) on mid-range and high-performance FPGA platforms:",
-        bold_prefix="Mid-Range FPGA Expansion: "
+        "Because our SystemVerilog code is parameterized, moving to larger FPGAs is straightforward:",
+        bold_prefix="Mid-Range FPGA Options: "
     )
-    add_bullet_item(doc, "Upgrading to the Tang Nano 20K (GW2AR-18 with 20,736 LUTs and 64 MB onboard SDRAM) allows expanding the SIMT array from 4 to 16 cores and the Systolic Array to 4x4 (16 DSP MACs), enabling real-time 64x64 graphics and deeper MLP neural layers.", bold_title="Tang Nano 20K (Edge AI Accelerator): ")
-    add_bullet_item(doc, "Targeting devices such as the Xilinx Artix-7 (100T) or AMD Zynq-7000 (100,000+ LUTs) enables expanding to 32 parallel cores (a full CUDA-equivalent warp) and an 8x8 Systolic Array (64 DSP MACs) clocked at 100–150 MHz. Interfacing through an AXI4 memory controller allows direct DMA burst streaming to external 512 MB DDR3/DDR4 RAM, supporting 640x480 3D vertex shaders and quantized convolutional networks (e.g., MobileNet).", bold_title="Xilinx Artix-7 / AMD Zynq (Mid-Range Embedded GPU): ")
+    add_bullet_item(doc, "Upgrading to the Tang Nano 20K (20,736 LUTs, 64 MB SDRAM) allows expanding to 16 SIMT cores and a 4x4 systolic array (16 DSP MACs), enabling real-time 64x64 graphics and deeper neural networks.", bold_title="Tang Nano 20K (Edge AI Booster): ")
+    add_bullet_item(doc, "Using a Xilinx Artix-7 (100T) or AMD Zynq board (100,000+ LUTs) allows scaling to 32 parallel cores (a full warp) and an 8x8 systolic array (64 DSP MACs) at 100–150 MHz. Connecting through an AXI4 memory controller allows direct streaming to 512 MB DDR3/DDR4 RAM for 3D vertex shaders and convolutional vision models.", bold_title="Xilinx Artix-7 / AMD Zynq (Mid-Range GPU): ")
 
-    add_styled_heading(doc, "6.3 Tier 4: The Path to Physical Silicon ASIC (Chip Tapeout)", level=2)
+    add_styled_heading(doc, "6.3 The Path to a Physical Silicon ASIC (Chip Tapeout)", level=2)
     add_body_paragraph(doc,
-        "Crucially, the synthesizable SystemVerilog RTL written for HeteroGPU can be taped out as a physical Application-Specific Integrated Circuit (ASIC) microchip. "
-        "Modern open-source silicon initiatives make fabrication directly accessible:",
-        bold_prefix="Physical Silicon Fabrication Roadmap: "
+        "Our SystemVerilog RTL can also be taped out as a physical microchip. "
+        "Using open-source programs like Tiny Tapeout or the Google / Efabless SkyWater 130nm (SKY130) MPW program, "
+        "the HeteroGPU RTL can be synthesized with the open-source OpenLane / Yosys ASIC toolchain into standard GDSII silicon layout. "
+        "For a commercial product, the 16-bit ALUs could be expanded to support IEEE 754 FP16/BF16/FP8, backed by on-chip L1/L2 caches and a PCIe host interface."
     )
-    add_bullet_item(doc, "Using programs like Tiny Tapeout or the Google / Efabless Caravel Open MPW shuttle, the HeteroGPU SystemVerilog RTL can be hardened into GDSII layout using the open-source OpenLane / Yosys ASIC toolchain and manufactured on the SkyWater 130nm CMOS semiconductor process (SKY130).", bold_title="Open-Source Silicon Shuttles (SkyWater 130nm): ")
-    add_bullet_item(doc, "For commercial silicon, the 16-bit fixed-point arithmetic units can be adapted to IEEE 754 FP16/BF16/FP8 floating point, accompanied by on-chip L1/L2 cache hierarchies and a PCIe Gen 4 host bus interface to function as a desktop or server acceleration co-processor.", bold_title="Commercial Silicon Scalability: ")
 
     # TABLE 3: Multi-Tier Scalability Matrix Table
     add_styled_heading(doc, "6.4 Multi-Tier Hardware Scalability Matrix", level=2)
-    add_body_paragraph(doc, "Table 3 outlines the architectural scaling roadmap across deployment tiers, from our edge proof-of-concept to custom silicon:")
+    add_body_paragraph(doc, "Table 3 summarizes how our architecture scales from our edge proof-of-concept up to custom silicon:")
 
     t3 = doc.add_table(rows=5, cols=5)
     t3.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -501,7 +481,7 @@ def build_synopsis():
 
     # TABLE 4: Tang Nano 9K Resource Budget
     add_styled_heading(doc, "6.5 Tang Nano 9K Proof-of-Concept Resource Budget", level=2)
-    add_body_paragraph(doc, "Table 4 details the verified hardware resource allocation for the Tier 1 Proof-of-Concept on the Sipeed Tang Nano 9K FPGA:")
+    add_body_paragraph(doc, "Table 4 shows the estimated resource usage on the Tang Nano 9K FPGA for our proof-of-concept:")
 
     t4 = doc.add_table(rows=6, cols=5)
     t4.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -540,19 +520,19 @@ def build_synopsis():
     
     for prefix, citation in references:
         p_ref = doc.add_paragraph()
-        p_ref.paragraph_format.left_indent = Inches(0.3)
-        p_ref.paragraph_format.first_line_indent = Inches(-0.3)
+        p_ref.paragraph_format.left_indent = Inches(0.28)
+        p_ref.paragraph_format.first_line_indent = Inches(-0.28)
         p_ref.paragraph_format.line_spacing = 1.15
-        p_ref.paragraph_format.space_after = Pt(4)
+        p_ref.paragraph_format.space_after = Pt(3.5)
         p_ref.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         
         r_pre = p_ref.add_run(prefix)
         r_pre.bold = True
-        r_pre.font.size = Pt(9.5)
+        r_pre.font.size = Pt(9.0)
         r_pre.font.color.rgb = RGBColor(30, 58, 138)
         
         r_cit = p_ref.add_run(citation)
-        r_cit.font.size = Pt(9.5)
+        r_cit.font.size = Pt(9.0)
         r_cit.font.color.rgb = RGBColor(51, 65, 85)
 
     # Save document
