@@ -91,14 +91,13 @@
    - Created physical FPGA pin constraints `hardware/fpga/tangnano9k/tangnano9k.cst` and timing constraints `tangnano9k.sdc` for Sipeed Tang Nano 9K (Gowin GW1NR-9).
    - Resolved WaveTrace VS Code extension startup error by initializing `config.wavetrace.json` in VS Code globalStorage.
 22. **Academic Synopsis Overhaul & Publication-Grade Document Generation**:
-   - Rebuilt `C:\Users\aadit\Downloads\HeteroGPU_Synopsis (3).docx` into an authoritative, publication-grade academic project synopsis while preserving the original college header, university logo, author details, guide name, and metadata.
+   - Rebuilt `C:\Users\aadit\Downloads\HeteroGPU_Synopsis_Proof_of_Concept.docx` (and `HeteroGPU_Synopsis (3).docx`) into an authoritative, publication-grade academic project synopsis while preserving the original college header, university logo, author details, guide name, and metadata.
+   - Reframed the entire project under an **Architectural Proof-of-Concept (PoC)** tone: the Sipeed Tang Nano 9K is explicitly positioned as an edge physical proof-of-concept vehicle proving extreme efficiency under tight hardware constraints (8,640 LUTs, 8 KB BRAM, 20 DSPs).
    - Contrasted traditional homogeneous SIMT GPUs vs HeteroGPU across compute models, instruction serialization, register pressure, and the memory wall.
-   - Curated comprehensive literature survey detailing Kung & Leiserson (1979), Google TPU v1 (ISCA 2017), NVIDIA Volta Tensor Cores (IEEE Micro 2018), Berkeley Gemmini (DAC 2021), MIT Eyeriss (ISCA 2016), and open-source educational GPUs (`tiny-gpu`, `smol-gpu`), proving the unaddressed research gap.
-   - Embedded 2 publication-quality high-resolution figures:
-     1. `heterogpu_architecture_diagram.png`: Architectural comparison between Traditional Homogeneous GPU and HeteroGPU.
-     2. `heterogpu_evaluation_results.png`: Empirical benchmark results chart across 4 verified testbenches.
-   - Formatted 3 comparative evaluation tables (Table 1: Architectural Comparison, Table 2: Benchmark Results & Speedups, Table 3: Tang Nano 9K FPGA Resource Budget).
-   - Documented completed achievements (Phases 1 & 2) and detailed future roadmap (Phase 3 Gowin EDA synthesis, on-chip JTAG flashing, HDMI video output, and autonomous hardware AI demonstration).
+   - Added Section 6.2 and 6.3 detailing the multi-tier scaling roadmap: horizontal/vertical expansion to Tang Nano 20K and Xilinx Artix-7/Zynq (32-64 cores, 8x8/16x16 systolic mesh, AXI4 interconnect to external DDR4) and physical ASIC tapeout via open-source shuttles (Google/Efabless SkyWater 130nm / Tiny Tapeout).
+   - Added Table 3: Multi-Tier Hardware Scalability Matrix (Tier 1 Edge PoC -> Tier 2 Edge AI Booster -> Tier 3 Mid-Range Embedded GPU -> Tier 4 Custom Silicon ASIC).
+   - Embedded 2 publication-quality high-resolution figures (Figure 1: Architecture Comparison Diagram, Figure 2: Empirical Benchmark Results).
+   - Documented 4 formatted comparison/evaluation tables and 10 IEEE-style academic citations.
 
 ## Key Empirical Results
 - **GEMM 4x4 Matrix Multiply:** 92 cycles (SIMT baseline: scalar broadcast, parallel load, parallel mul, parallel add, parallel store) vs **16 cycles (HeteroGPU AI Engine)** = **5.75x Hardware Speedup**.
