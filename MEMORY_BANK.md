@@ -123,6 +123,10 @@ un_demo.py)**:
    - Automatically executes hardware/sim/run_sim.bat via Icarus Verilog (iverilog + vp), captures RTL telemetry, and outputs a formatted verification matrix proving 100% 1-to-1 cycle accuracy (PE ReLU: 1 cycle, 2x2 Systolic Array: 4 cycles, DMA 8-word burst: 9 cycles, total: 15 cycles).
    - Informs reviewer how to inspect dumped waveforms via gtkwave hardware/sim/waves.vcd or in VS Code with WaveTrace.
 
+25. **Automated GTKWave Workspace (waves.gtkw & iew_waves.bat)**:
+   - Added pre-configured GTKWave project file hardware/sim/waves.gtkw with organized signal groups (Clock/Reset, Test 1 PE ReLU, Test 2 Systolic GEMM, Test 3 DMA Burst, and Telemetry counters).
+   - Created 1-click launcher hardware/sim/view_waves.bat to launch GTKWave with proper signal radix and formatting.
+
 ## Key Empirical Results
 - **GEMM 4x4 Matrix Multiply:** 92 cycles (SIMT baseline: scalar broadcast, parallel load, parallel mul, parallel add, parallel store) vs **16 cycles (HeteroGPU AI Engine)** = **5.75x Hardware Speedup**.
 - **Memory Block Copy (64 words):** 80 cycles (SIMT load/store chunks) vs **65 cycles (DMA)** = **1.23x speedup with 100% compute cores freed**.
