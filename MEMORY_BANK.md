@@ -99,6 +99,23 @@
    - Embedded 2 publication-quality high-resolution figures (Figure 1: Architecture Comparison Diagram, Figure 2: Empirical Benchmark Results).
    - Documented 4 formatted comparison/evaluation tables and 10 IEEE-style academic citations.
 
+23. **Review 2 Academic Presentation (HeteroGPU_Review_2_Presentation.pptx)**:
+   - Generated standard widescreen (16:9) presentation matching Galgotias College of Engineering & Technology (GCET) Capstone / Mini Project format based on Review PPT Mini Project.pptx.
+   - Header metadata: Department of VLSI and Communication Technology, Review 2 (Academic Year 2026-2027), B.Tech Electronics & VLSI Design (Sem V).
+   - Supervisor: Ms. Himanshi Chugh (Assistant Professor).
+   - Team: Aaditya Bhardwaj (Roll: 2400971730001) & Gauri Gaur (Roll: 240097173035).
+   - 8 structured slides strictly mapped to evaluation rubrics:
+     - **Slide 1:** Title Slide (Institutional header, GCET crest logo, project title, guide card, team details).
+     - **Slide 2:** Objectives & Problem Formulation (Why SIMT chokes on AI vs. 5 defined engineering goals).
+     - **Slide 3:** Proposed HeteroGPU Microarchitecture (Embedded architecture diagram + 3 engine callouts).
+     - **Slide 4:** Objectives Completed: Software & RTL Implementation (Phase 1 Python simulator + Phase 2 synthesizable SystemVerilog RTL).
+     - **Slide 5:** Results & Simulations: Hardware RTL Verification (Test 1 PE ReLU, Test 2 Systolic GEMM, Test 3 DMA Burst, 15-cycle telemetry, WaveTrace / GTKWave waveform dump).
+     - **Slide 6:** Results & Simulations: Quantitative Benchmark Results (Embedded benchmark chart + 5.75x speedup, 1.23x DMA speedup with 100% compute cores freed, 95.3% shader utilization, 34-cycle AI forward pass).
+     - **Slide 7:** Objectives to be Achieved: FPGA Synthesis & Roadmap (Phase 3 Gowin EDA synthesis, 27 MHz Tang Nano 9K flashing, HDMI video generator, standalone Pong AI + multi-tier scalability roadmap to Tang Nano 20K, Artix-7, and SkyWater 130nm ASIC).
+     - **Slide 8:** Hardware Resource Budget & Conclusion (Tang Nano 9K resource utilization table: 16.8% LUTs, 12.7% FFs, 15.4% BRAM, 20% DSPs + 3 takeaway cards).
+   - Saved to C:\Users\aadit\Downloads\HeteroGPU_Review_2_Presentation.pptx and C:\Users\aadit\HeteroGPU\HeteroGPU_Review_2_Presentation.pptx.
+   - Automation script: generate_review_presentation.py and extracted college crest: slide1_logo.png.
+
 ## Key Empirical Results
 - **GEMM 4x4 Matrix Multiply:** 92 cycles (SIMT baseline: scalar broadcast, parallel load, parallel mul, parallel add, parallel store) vs **16 cycles (HeteroGPU AI Engine)** = **5.75x Hardware Speedup**.
 - **Memory Block Copy (64 words):** 80 cycles (SIMT load/store chunks) vs **65 cycles (DMA)** = **1.23x speedup with 100% compute cores freed**.
