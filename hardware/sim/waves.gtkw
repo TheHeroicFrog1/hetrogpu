@@ -1,0 +1,64 @@
+[*]
+[*] GTKWave Save File for HeteroGPU Hardware RTL Verification
+[*] Target: Icarus Verilog Simulation & Defense Presentation
+[*]
+[dumpfile] "waves.vcd"
+[savefile] "waves.gtkw"
+[timestart] 0
+[size] 1400 800
+[pos] -1 -1
+*-18.000000 400000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_heterogpu.
+[treeopen] tb_heterogpu.uut.
+@28
+tb_heterogpu.clk
+tb_heterogpu.rst_n
+tb_heterogpu.gpu_busy
+@200
+-
+-=== 1. PE CORE RELU ACTIVATION ===
+@28
+tb_heterogpu.start_simt
+tb_heterogpu.simt_use_imm
+@22
+tb_heterogpu.simt_opcode[3:0]
+tb_heterogpu.simt_rd[2:0]
+tb_heterogpu.simt_rs1[2:0]
+tb_heterogpu.simt_imm_val[15:0]
+tb_heterogpu.uut.u_simt.gen_pes[0].u_pe.data_out[15:0]
+@200
+-
+-=== 2. 2x2 SYSTOLIC TENSOR CORE ===
+@28
+tb_heterogpu.start_ai_gemm
+tb_heterogpu.uut.u_systolic.busy
+tb_heterogpu.uut.u_systolic.done
+@24
+tb_heterogpu.uut.u_systolic.state[2:0]
+@22
+tb_heterogpu.uut.u_systolic.c00[15:0]
+tb_heterogpu.uut.u_systolic.c01[15:0]
+tb_heterogpu.uut.u_systolic.c10[15:0]
+tb_heterogpu.uut.u_systolic.c11[15:0]
+@200
+-
+-=== 3. AUTONOMOUS DMA BURST ===
+@28
+tb_heterogpu.start_dma
+tb_heterogpu.uut.u_dma.busy
+tb_heterogpu.uut.u_dma.done
+@24
+tb_heterogpu.dma_src[11:0]
+tb_heterogpu.dma_dest[11:0]
+tb_heterogpu.dma_len[11:0]
+tb_heterogpu.uut.u_dma.burst_count[11:0]
+@200
+-
+-=== REAL-TIME CYCLE TELEMETRY ===
+@24
+tb_heterogpu.tel_simt[31:0]
+tb_heterogpu.tel_ai[31:0]
+tb_heterogpu.tel_dma[31:0]
+tb_heterogpu.tel_total[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
