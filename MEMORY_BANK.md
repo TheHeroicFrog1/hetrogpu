@@ -116,6 +116,13 @@
    - Saved to C:\Users\aadit\Downloads\HeteroGPU_Review_2_Presentation.pptx and C:\Users\aadit\HeteroGPU\HeteroGPU_Review_2_Presentation.pptx.
    - Automation script: generate_review_presentation.py and extracted college crest: slide1_logo.png.
 
+24. **Unified Multi-Modal Demo & Hardware Verification CLI (
+un_demo.py)**:
+   - Added --rtl (-r, --hardware) mode to python_test_simulator/run_demo.py.
+   - Bridges the Python Architectural Golden Model and synthesizable SystemVerilog RTL in one command.
+   - Automatically executes hardware/sim/run_sim.bat via Icarus Verilog (iverilog + vp), captures RTL telemetry, and outputs a formatted verification matrix proving 100% 1-to-1 cycle accuracy (PE ReLU: 1 cycle, 2x2 Systolic Array: 4 cycles, DMA 8-word burst: 9 cycles, total: 15 cycles).
+   - Informs reviewer how to inspect dumped waveforms via gtkwave hardware/sim/waves.vcd or in VS Code with WaveTrace.
+
 ## Key Empirical Results
 - **GEMM 4x4 Matrix Multiply:** 92 cycles (SIMT baseline: scalar broadcast, parallel load, parallel mul, parallel add, parallel store) vs **16 cycles (HeteroGPU AI Engine)** = **5.75x Hardware Speedup**.
 - **Memory Block Copy (64 words):** 80 cycles (SIMT load/store chunks) vs **65 cycles (DMA)** = **1.23x speedup with 100% compute cores freed**.
