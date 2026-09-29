@@ -110,23 +110,33 @@ Requirements: Python 3.8+ and Pygame (`pip install pygame matplotlib numpy`).
 # Launch interactive 4-mode Pygame visualizer
 py python_test_simulator/run_demo.py
 
+# Run unified hardware RTL simulation & verification matrix
+py python_test_simulator/run_demo.py --rtl
+
 # Run academic cycle benchmark suite
 py python_test_simulator/run_demo.py --bench
 
 # Generate publication-quality 300 DPI graphs
 py python_test_simulator/run_demo.py --graph
+
+# Generate Review 2 PowerPoint presentation (GCET Capstone format)
+py generate_review_presentation.py
 ```
 
 ### 2. Verify SystemVerilog RTL in Simulation
-Simulate with any standard Verilog simulator (Icarus Verilog, ModelSim, Verilator):
+Simulate with Icarus Verilog or any standard simulator:
 
-```bash
-# Compile and run testbench with Icarus Verilog
-iverilog -g2012 -o hardware/sim/heterogpu_sim hardware/rtl/*.sv hardware/sim/tb_heterogpu.sv
+```powershell
+# One-click Windows compilation & simulation
+.\hardware\sim\run_sim.bat
+
+# One-click GTKWave waveform visualization (pre-configured signals)
+.\hardware\sim\view_waves.bat
+
+# Or manual compilation with Icarus Verilog
+iverilog -g2012 -o hardware/sim/heterogpu_sim -f hardware/sim/filelist.f
 vvp hardware/sim/heterogpu_sim
-
-# View waveform traces in GTKWave
-gtkwave hardware/sim/waves.vcd
+gtkwave hardware/sim/waves.vcd hardware/sim/waves.gtkw
 ```
 
 ### 3. Synthesize for Sipeed Tang Nano 9K
