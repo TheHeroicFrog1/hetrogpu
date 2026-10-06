@@ -3,9 +3,11 @@
 // Target: Gowin GW1NR-9 (Tang Nano 9K FPGA)
 // Description: Direct Memory Access (DMA) Burst Controller.
 // Architecture: Autonomous hardware bus master executing high-speed memory-to-memory
-//               burst copies without stalling SIMT or Matrix compute engines.
-// Timing: T_dma = 1 (Setup/Bus Arbitration) + N (Burst Word Cycles).
+//               burst copies with single-cycle pipelined BRAM read-to-write alignment.
+// Timing: Fully pipelined 1 word/cycle throughput with proper 1-cycle BRAM latency delay.
 // =============================================================================
+
+`timescale 1ns / 1ps
 
 module dma_controller (
     input  logic        clk,
@@ -32,79 +34,89 @@ module dma_controller (
     output logic [31:0] total_dma_cycles
 );
 
-    // DMA State Machine
-    typedef enum logic [2:0] {
-        DMA_IDLE       = 3'd0,
-        DMA_SETUP      = 3'd1, // 1 cycle bus arbitration / address setup
-        DMA_READ_BURST = 3'd2, // Auto-incrementing read pointer
-        DMA_WRITE_BURST= 3'd3, // Auto-incrementing write pointer
-        DMA_COMPLETE   = 3'd4
+    typedef enum logic [1:0] {
+        DMA_IDLE   = 2'd0,
+        DMA_BURST  = 2'd1,
+        DMA_FINISH = 2'd2
     } dma_state_t;
 
     dma_state_t state;
 
-    logic [11:0] current_src;
-    logic [11:0] current_dest;
-    logic [11:0] words_left;
+    logic [11:0] read_ptr;
+    logic [11:0] write_ptr;
+    logic [11:0] reads_remaining;
+    logic [11:0] writes_remaining;
 
-    assign dma_read_addr  = current_src;
-    assign dma_write_addr = current_dest;
-    assign dma_write_data = dma_read_data;
+    // 1-Cycle Pipeline Delay Registers for Destination Address & Write Enable
+    // Compensates for synchronous BRAM Port A read latency
+    logic [11:0] dest_addr_pipe;
+    logic        we_pipe;
 
-    // =========================================================================
-    // DMA State Machine & Auto-Increment Counters
-    // =========================================================================
+    assign dma_read_addr  = read_ptr;
+    assign dma_write_addr = dest_addr_pipe;
+    assign dma_write_data = dma_read_data; // BRAM Port A read data directly feeds Port B write data
+    assign dma_we         = we_pipe;
+
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             state            <= DMA_IDLE;
             busy             <= 1'b0;
             done             <= 1'b0;
-            dma_we           <= 1'b0;
-            current_src      <= 12'd0;
-            current_dest     <= 12'd0;
-            words_left       <= 12'd0;
+            read_ptr         <= 12'd0;
+            write_ptr        <= 12'd0;
+            dest_addr_pipe   <= 12'd0;
+            we_pipe          <= 1'b0;
+            reads_remaining  <= 12'd0;
+            writes_remaining <= 12'd0;
             total_dma_cycles <= 32'd0;
         end else begin
             case (state)
                 DMA_IDLE: begin
-                    done   <= 1'b0;
-                    dma_we <= 1'b0;
-                    if (start) begin
+                    done    <= 1'b0;
+                    we_pipe <= 1'b0;
+                    if (start && (transfer_length > 0)) begin
                         busy             <= 1'b1;
-                        current_src      <= src_addr;
-                        current_dest     <= dest_addr;
-                        words_left       <= transfer_length;
-                        total_dma_cycles <= total_dma_cycles + 32'd1; // 1 setup cycle
-                        state            <= DMA_SETUP;
+                        read_ptr         <= src_addr;
+                        write_ptr        <= dest_addr;
+                        reads_remaining  <= transfer_length;
+                        writes_remaining <= transfer_length;
+                        total_dma_cycles <= total_dma_cycles + 32'd1;
+                        state            <= DMA_BURST;
                     end else begin
                         busy <= 1'b0;
                     end
                 end
 
-                DMA_SETUP: begin
-                    // 1 cycle bus arbitration
-                    state <= DMA_READ_BURST;
-                end
+                DMA_BURST: begin
+                    total_dma_cycles <= total_dma_cycles + 32'd1;
 
-                DMA_READ_BURST: begin
-                    // Streaming read and write in parallel burst
-                    if (words_left > 0) begin
-                        dma_we           <= 1'b1;
-                        current_src      <= current_src + 12'd1;
-                        current_dest     <= current_dest + 12'd1;
-                        words_left       <= words_left - 12'd1;
-                        total_dma_cycles <= total_dma_cycles + 32'd1; // 1 cycle per word
+                    // Read Pipeline Stage: Issue read address
+                    if (reads_remaining > 0) begin
+                        read_ptr         <= read_ptr + 12'd1;
+                        reads_remaining  <= reads_remaining - 12'd1;
+                        dest_addr_pipe   <= write_ptr;
+                        write_ptr        <= write_ptr + 12'd1;
+                        we_pipe          <= 1'b1;
                     end else begin
-                        dma_we <= 1'b0;
-                        done   <= 1'b1;
-                        busy   <= 1'b0;
-                        state  <= DMA_COMPLETE;
+                        we_pipe          <= 1'b0;
+                    end
+
+                    // Write Pipeline Stage: Account for BRAM 1-cycle latency
+                    if (we_pipe) begin
+                        writes_remaining <= writes_remaining - 12'd1;
+                        if (writes_remaining == 12'd1) begin
+                            // Final write completes on next clock edge
+                            state <= DMA_FINISH;
+                        end
                     end
                 end
 
-                DMA_COMPLETE: begin
-                    done  <= 1'b0;
-                    state <= DMA_IDLE;
+                DMA_FINISH: begin
+                    total_dma_cycles <= total_dma_cycles + 32'd1;
+                    we_pipe <= 1'b0;
+                    done    <= 1'b1;
+                    busy    <= 1'b0;
+                    state   <= DMA_IDLE;
                 end
 
                 default: state <= DMA_IDLE;

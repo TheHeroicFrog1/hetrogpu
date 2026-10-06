@@ -1,36 +1,42 @@
 // =============================================================================
 // Physical Constraints File (.cst) for Sipeed Tang Nano 9K
-// Device: Gowin GW1NR-LV9QN88PC6/I5
-// Board: Sipeed Tang Nano 9K
+// Target: Gowin GW1NR-LV9QN88PC6/I5 (Tang Nano 9K)
+// Module: heterogpu_fpga_top.sv
 // =============================================================================
 
 // Onboard 27 MHz Crystal Oscillator
 IO_LOC "clk" 52;
 IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
 
-// Onboard User Button S1 (Active-Low Hardware Reset)
-IO_LOC "rst_n" 3;
+// Onboard User Pushbuttons (Active-Low)
+IO_LOC "rst_n" 4;           // Button S1
 IO_PORT "rst_n" IO_TYPE=LVCMOS33 PULL_MODE=UP;
 
-// Status & Activity Indicator LEDs
-IO_LOC "gpu_busy" 10;
-IO_PORT "gpu_busy" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+IO_LOC "btn_run" 3;         // Button S2
+IO_PORT "btn_run" IO_TYPE=LVCMOS33 PULL_MODE=UP;
 
-// =============================================================================
-// Onboard HDMI / DVI Physical Transmitter Differential Pairs
-// =============================================================================
-// TMDS Clock
-// IO_LOC "tmds_clk_p" 69,68;
-// IO_PORT "tmds_clk_p" PULL_MODE=NONE DRIVE=8;
+// Onboard USB-to-UART Serial Telemetry
+IO_LOC "uart_rx" 18;
+IO_PORT "uart_rx" IO_TYPE=LVCMOS33 PULL_MODE=UP;
 
-// TMDS Data Channel 0 (Blue)
-// IO_LOC "tmds_d0_p" 71,70;
-// IO_PORT "tmds_d0_p" PULL_MODE=NONE DRIVE=8;
+IO_LOC "uart_tx" 17;
+IO_PORT "uart_tx" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8;
 
-// TMDS Data Channel 1 (Green)
-// IO_LOC "tmds_d1_p" 73,72;
-// IO_PORT "tmds_d1_p" PULL_MODE=NONE DRIVE=8;
+// 6 Onboard Status LEDs (Active-Low on Tang Nano 9K)
+IO_LOC "led[0]" 10;
+IO_PORT "led[0]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
 
-// TMDS Data Channel 2 (Red)
-// IO_LOC "tmds_d2_p" 75,74;
-// IO_PORT "tmds_d2_p" PULL_MODE=NONE DRIVE=8;
+IO_LOC "led[1]" 11;
+IO_PORT "led[1]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+
+IO_LOC "led[2]" 13;
+IO_PORT "led[2]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+
+IO_LOC "led[3]" 14;
+IO_PORT "led[3]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+
+IO_LOC "led[4]" 15;
+IO_PORT "led[4]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+
+IO_LOC "led[5]" 16;
+IO_PORT "led[5]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
